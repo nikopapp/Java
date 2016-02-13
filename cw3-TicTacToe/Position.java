@@ -1,10 +1,14 @@
 class Position {
   int x;
   int y;
-  char player;
-  void setPos(int x, int y , char player){
-    this.x=x;
-    this.y=y;
-    this.player=player;
+  char player ='0';
+  void setPos(int y, int x){
+    this.x=x-'1';
+    this.y=y-'A';
+  }
+  char swapPlayer(char player){
+    if(player=='0') this.player='X';
+    else this.player='0';
+    return this.player;
   }
 }
