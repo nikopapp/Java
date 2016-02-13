@@ -12,7 +12,6 @@ class Oxo {
       Display  d = new Display();
       Position p = new Position();
       d.Display(b.board);
-      boolean win=false;
 //---------------------Game Loop start
       while(b.finished==false){
         d.getInput(p.player);
