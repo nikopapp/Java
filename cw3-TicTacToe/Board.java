@@ -2,7 +2,8 @@ import java.util.Arrays;
 
 class Board {
   char[][] board = new char[3][3];
-  boolean finished = false;
+  boolean gameWin = false;
+  boolean gameDraw =false;
   Board(){
     this.initialize();
   }
@@ -14,15 +15,13 @@ class Board {
   };
     board = btemp;
   }
-  void initialize(){
+  private void initialize(){
     for (char[] row: board)
       Arrays.fill(row, '-');
   }
-  boolean addPond (int y, int x, char player) /*throws Exception*/ {
-    System.out.println( " "+x+y);
-    //if(board[y-'A'][x-'1']!='-') throw new Exception();
+  boolean addPond (int y, int x, char player){
     if (x<0 || x>=3 || y<0 || y>=3){
-      System.out.println("Try insie the board, please ");
+      System.out.println("Try inside the board, please ");
       return false;
     }
     else if(board[y][x]!='-'){
@@ -31,10 +30,23 @@ class Board {
     }
     else {
       board[y][x]=player;
-      //System.out.println("x: "+(x)+", y: "+(y) + " -- " +player);
-      this.finished = win(y,x,player);
+      checkFinished(y, x, player);
       return true;
     }
+  }
+  private void checkFinished(int y, int x, char player){
+    gameWin = win(y,x,player);
+    gameDraw = draw();
+  }
+  private boolean draw(){
+    int counter=0;
+    for(int i=0;i<3;i++){
+      for(int j=0;j<3;j++){
+        if(board[i][j]=='-') counter++;
+      }
+    }
+    if(counter == 0) return true;
+    else return false;
   }
   boolean win(int y, int x, char player){
     if(checkRow(y, x, player))        return true;
@@ -43,40 +55,34 @@ class Board {
     else if(checkDiag2(y, x, player)) return true;
     else return false;
   }
-  boolean checkRow(int y, int x, char player){
-    //System.out.println("y "+(y)+" x "+(x));
+  private boolean checkRow(int y, int x, char player){
     int counter=0;
     for(int i=0;i<3;i++){
       if(board[y][i] == player) counter++;
     }
-    //System.out.println("row counter " + counter+" player "+player);
     if(counter==3){
       System.out.println("you win " + player);
       return true;
     }
     else return false;
   }
-  boolean checkCol(int y, int x, char player){
-    //System.out.println("y "+(y)+" x "+(x));
+  private boolean checkCol(int y, int x, char player){
     int counter=0;
     for(int i=0;i<3;i++){
       if(board[i][x]==player) counter++;
     }
-    //System.out.println("col counter "+counter+" player "+player);
     if(counter==3){
       System.out.println("you win "+player);
       return true;
     }
     else return false;
   }
-  boolean checkDiag1(int y, int x, char player){
+  private boolean checkDiag1(int y, int x, char player){
     if(x==y){
-    //System.out.println("y "+(y)+" x "+(x));
     int counter=0;
     for(int i=0;i<3;i++){
       if(board[i][i]==player) counter++;
     }
-    //System.out.println("col counter "+counter+" player "+player);
     if(counter==3){
       System.out.println("you win "+player);
       return true;
@@ -85,14 +91,12 @@ class Board {
     }
     else return false;
   }
-  boolean checkDiag2(int y, int x, char player){
+  private boolean checkDiag2(int y, int x, char player){
     if((x+y)==2){
-    //System.out.println("y "+(y)+" x "+(x));
     int counter=0;
     for(int i=0;i<3;i++){
       if(board[i][2-i]==player) counter++;
     }
-    //System.out.println("col counter "+counter+" player "+player);
     if(counter==3){
       System.out.println("you win "+player);
       return true;
@@ -101,5 +105,4 @@ class Board {
     }
     else return false;
   }
-
 }

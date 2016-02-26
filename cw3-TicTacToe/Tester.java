@@ -1,6 +1,8 @@
 import java.util.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-class Tester{
+class Tester extends JFrame {
   private int tests;
   void run(){
     test_Board();
@@ -15,13 +17,30 @@ class Tester{
   void test_Position(){
     Position_swapPlayer();
   }
+  //Visual tests only
   void test_Display(){
-   Display d=new Display();
-   Board b = new Board();
-   for (char[] row: b.board)
-     Arrays.fill(row, '2');
-   d.Display(b.board);
-
+    Display_Display();
+    Display_drawGraph();
+  }
+  void Display_Display(){
+    Display d = new Display();
+    Board b = new Board();
+    for (char[] row: b.board)
+      Arrays.fill(row, '2');
+    d.Display(b.board);
+  }
+  void Display_drawGraph(){
+    Display d = new Display();
+    Board b = new Board('X','0','0',
+                        'X','0','X',
+                        'X','X','0');
+    d.initializeGraph();
+    d.drawGraph(b.board, '0');
+    try
+        { Thread.sleep(500); }
+      catch(InterruptedException ex)
+        { Thread.currentThread().interrupt(); }
+    d.closeGraph();
   }
   //Tests 1 to 9
   void Board_addPond(){
