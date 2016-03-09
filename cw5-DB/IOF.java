@@ -3,10 +3,10 @@ import java.nio.channels.FileChannel;
 import java.io.*;
 import java.util.*;
 
-class FileManipulation{
+class IOF{
   private static String filename;
 
-  FileManipulation(String filename){
+  IOF(String filename){
     this.filename=filename;
   }
 

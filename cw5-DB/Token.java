@@ -6,7 +6,7 @@ public class Token{
   this.tokens=tokenise(numOfFields,input);
   }
 
-  public List<String> tokenise(int numOfFields, String str){
+  private List<String> tokenise(int numOfFields, String str){
     List<String> list = new ArrayList<String>();
     StringTokenizer st = new StringTokenizer( str , ",");
     while (st.hasMoreTokens()){

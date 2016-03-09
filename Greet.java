@@ -5,6 +5,6 @@ class Greet
     if (args.length==0)
       System.out.println("Hello");
     else
-      System.out.println("Hello " + args[0]);
+      System.out.println("Hello " + args[0]); 
   }
 }
