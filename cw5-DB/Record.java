@@ -10,6 +10,9 @@ class Record extends Token{
     this.valuesIn=valuesIn;
     this.values=tokens;
   }
+  public int returnEntry(String name){
+    return values.indexOf(name);
+  }
   //-------------- Testing --------------
   public static void main(String args[]){
     Tester t = new Tester();

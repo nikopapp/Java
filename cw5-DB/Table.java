@@ -3,11 +3,12 @@ import java.util.*;
 class Table extends Token{
   int numOfFields;
   boolean valid;
-  String name;
+  private String name;
   private List<String> columns = new ArrayList<String>();
   private List<Record> entries = new ArrayList<Record>();
-  Table(int numOfFields, String fieldsIn){
+  Table(String name, int numOfFields, String fieldsIn){
     super(numOfFields,fieldsIn);
+    this.name=name;
     this.numOfFields=numOfFields;
     this.columns=tokens;
     this.valid=checkforDuplicates(tokens);
@@ -61,10 +62,28 @@ class Table extends Token{
   // public Record returnEntryValue(String str){
   //   return entries.indexOf(values.str);
   // }
+  public String getName(){
+    return this.name;
+  }
+  public boolean isName(String name){
+    return this.name.equals(name);
+  }
+  public List<Integer> indexOfTable(String name){
+    int i=0;
+    List<Integer> list = new ArrayList<Integer>();
+    for(Record r:entries){
+      int temp=r.returnEntry(name);
+      if (temp!=-1) list.add(i);
+      i++;
+    }
+    return list;
+  }
+
+
 // ----------- Testing ----------------
   public static void main(String args[]){
     Tester t = new Tester();
-    Table tab = new Table(3,"Student,unit,grade");
+    Table tab = new Table("temp",3,"Student,unit,grade");
     t.is(tab.returnTableColumns(),3);
     t.is(tab.returnTableSize(),0);
     tab.t_addEntry();
@@ -72,10 +91,10 @@ class Table extends Token{
     t.is(tab.returnEntryIndex(0).values.get(1),"Databases");
     t.is(tab.returnEntryIndex(0).values.get(2),"95");
     //Testing duplicate columns
-    Table tab2 = new Table(0,"");
+    Table tab2 = new Table("temp",0,"");
     List<String> list= tab2.t_duplicateList();
     t.is(tab2.checkforDuplicates(list),false);
-    Table tab3 = new Table(3,"student,student,grade");
+    Table tab3 = new Table("temp",3,"student,student,grade");
     t.is(tab3.valid,false);
     t.result();
   }

@@ -17,7 +17,7 @@ class Tester{
     is(r.values.get(1),"cat");
   }
   private void test_Table(){
-    Table t = new Table(3,"Student,unit,grade");
+    Table t = new Table("Cohort", 3,"Student,unit,grade");
     is(t.returnTableColumns(),3);
     is(t.returnTableSize(),0);
     t.t_addEntry();
