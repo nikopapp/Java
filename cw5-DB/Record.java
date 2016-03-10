@@ -10,4 +10,14 @@ class Record extends Token{
     this.valuesIn=valuesIn;
     this.values=tokens;
   }
+  //-------------- Testing --------------
+  public static void main(String args[]){
+    Tester t = new Tester();
+    Record r = new Record(2,"nikos,cat");
+    t.is(r.values.size(),2);
+    t.is(r.values.get(0),"nikos");
+    t.is(r.values.get(1),"cat");
+    t.is(r.numOfFields,2);
+    t.result();
+  }
 }

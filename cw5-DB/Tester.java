@@ -5,6 +5,9 @@ class Tester{
     test_Record();
     test_Table();
     test_DB();
+    result();
+  }
+  void result() {
     System.out.println("Tests passed " + tests+" of "+numTests);
   }
   private void test_Record(){
@@ -18,9 +21,9 @@ class Tester{
     is(t.returnTableColumns(),3);
     is(t.returnTableSize(),0);
     t.t_addEntry();
-    is(t.returnEntry(0).values.get(0),"Nikos");
-    is(t.returnEntry(0).values.get(1),"Databases");
-    is(t.returnEntry(0).values.get(2),"95");
+    is(t.returnEntryIndex(0).values.get(0),"Nikos");
+    is(t.returnEntryIndex(0).values.get(1),"Databases");
+    is(t.returnEntryIndex(0).values.get(2),"95");
   }
   private void test_DB(){
     DB tdb = new DB();
@@ -38,7 +41,7 @@ class Tester{
         tests++;
         return;
       }
-      System.out.println("Test " + tests + " failed: expected: " + x + ", actual " + y);
+      System.out.println("Test " + tests + " failed: expected: " + y + ", actual " + x);
   }
 
 }

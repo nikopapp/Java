@@ -4,16 +4,16 @@ import java.io.*;
 import java.util.*;
 
 class IOF{
-  private static String filename;
+  private String filename;
 
   IOF(String filename){
     this.filename=filename;
   }
 
-  static void write(int position, String record){
+  public void write(int position, String record){
     writeToRandomAccessFile(filename,position,record);
   }
-  static String read(int position){
+  public String read(int position){
     return readFromRandomAccessFile(filename,position);
   }
   private static String readFromRandomAccessFile(String file, int position) {
