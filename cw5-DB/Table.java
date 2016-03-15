@@ -71,7 +71,7 @@ class Table extends Token{
     file.write(0,table);
   }
 
-  public Table loadTable(String name){
+  public static Table loadTable(String name){
     IOF file = new IOF(name+".txt");
     String tableIn=new String();
     tableIn = file.read(0);

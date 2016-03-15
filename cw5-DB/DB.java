@@ -1,9 +1,9 @@
 //at the moment allows duplicate table name do smthng about it
-//id Records
 
-import javax.swing.*;
 import java.util.*;
-
+import java.util.Scanner;
+import javax.swing.*;
+//id Records
 
 class DB{
   public static final int NOT_EXIST  = -1;
@@ -18,40 +18,31 @@ class DB{
   public static final int TEST    = 6;
   public static final int QUIT    = 0;
   //---Record Menu Switch
-  public static final int R_NEW   = 1;
-  public static final int R_RMV   = 2;
-  public static final int R_RET_INDEX = 4;
-  public static final int R_RET_VALUE = 5;
+  public static final int R_NEW   = 11;
+  public static final int R_RMV   = 12;
+  public static final int R_RET_INDEX = 14;
+  public static final int R_RET_VALUE = 15;
   //---Table Menu Switch
-  public static final int T_NEW    = 1;
-  public static final int T_RMV    = 2;
-  public static final int T_RENAME = 4;
+  public static final int T_NEW    = 21;
+  public static final int T_RMV    = 22;
+  public static final int T_RENAME = 24;
+  public static final int T_TEST   = 25;
 
+  private static Scanner in = new Scanner(System.in);
   private List<Table> dbase = new ArrayList<Table>();
+
   public static void main(String args[]){
     DB db=new DB();
-    SwingUtilities.invokeLater(db::run);
-    Scanner in = new Scanner(System.in);
+    Scanner in = DB.in;
     boolean cntrl=true;
     while(cntrl==true){
       int cases=-1;
       int tableNum;
       int numOfFields;
-      // printInstructions();
-      // cases=parseIn(in);
-      // cntrl=db.control(in,cases);
+      printInstructions();
+      cases=parseIn(in);
+      cntrl=db.control(in,cases);
     }
-  }
-  private void run(){
-    JFrame w = new JFrame();
-    GUI gui = new GUI();
-    boolean finished = false;
-    w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    w.setTitle("Simple Database");
-    w.add(gui.frame);
-    w.pack();
-    w.setLocationByPlatform(true);
-    w.setVisible(true);
   }
   private static int parseIn(Scanner in){
     int cases=10;
@@ -75,9 +66,7 @@ class DB{
         controlSave();
         break;
       case LOAD:
-        System.out.println("Provide the name of the file to be loaded");
-        Table temp=new Table("");
-        dbase.add(temp.loadTable(in.next()));
+        controlLoad();
         break;
       case TEST:
         testing();
@@ -89,8 +78,49 @@ class DB{
     }
     return true;
   }
-  //restore private identifier
-   boolean controlRecord(Scanner in){
+  public void GUI_control(int cases){
+      switch (cases) {
+      case R_NEW:
+        newRecord(in);
+        break;
+      case R_RMV:
+        removeRecord(in);
+        break;
+      case R_RET_INDEX:
+        retrieveIndex(in);
+        break;
+      case R_RET_VALUE:
+        retrieveValue(in);
+        break;
+      case T_NEW:
+        newTable(in);
+        break;
+      case T_RMV:
+        removeTable(in);
+        break;
+      case T_TEST:
+        addTestTable();
+        break;
+      case PRINT:
+        controlPrint();
+        break;
+      case SAVE:
+        controlSave();
+        break;
+      case LOAD:
+        controlLoad();
+        break;
+      case TEST:
+        testing();
+        break;
+      case T_RENAME:
+        renameTable(in);
+        break;
+      default:
+        break;
+    }
+  }
+  private boolean controlRecord(Scanner in){
    boolean cntrl=true;
     while(cntrl==true){
       printInstructionsRecord();
@@ -119,7 +149,7 @@ class DB{
     }
     return true;
   }
-  void newRecord(Scanner in){
+  private void newRecord(Scanner in){
     printInstructionsNewRecord();
     getTableNames("the tables are ");
     int tableNum =  returnTableByName(in.next());
@@ -149,7 +179,7 @@ class DB{
     }
   }
 //restore private spacificatior
-   boolean controlTable(Scanner in){
+   private boolean controlTable(Scanner in){
    boolean cntrl=true;
     while(cntrl==true){
       printInstructionsTable();
@@ -206,19 +236,24 @@ class DB{
     int tableNum = returnTableByName(in.next());
     dbase.get(tableNum).rename(in.next());
   }
-  //restore private identifier
-   void controlPrint(){
+  //public interface methods for cotrol through GUI class
+  public void controlPrint(){
     System.out.println("printing...");
     for(Table tab: dbase){
       tab.printTable(ENTIRE);
     }
   }
-   void controlSave(){
+  public void controlSave(){
     System.out.println("saving...");
     for(Table tab: dbase){
       tab.saveTable();
     }
   }
+  public void controlLoad(){
+    System.out.println("Provide the name of the file to be loaded");
+    dbase.add(Table.loadTable(in.next()));
+  }
+
   private void getTableNames(String str){
     System.out.println(str);
     for(Table tab: dbase){

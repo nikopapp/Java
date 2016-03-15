@@ -8,3 +8,5 @@ jar:
 	jar -cvfm DB.jar Manifest.txt *.class
 runJar:
 	java -jar DB.jar
+test:
+	./test.sh

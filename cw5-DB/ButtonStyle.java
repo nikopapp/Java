@@ -21,7 +21,8 @@ class ButtonStyle extends BasicButtonUI {
     Graphics2D g2 = (Graphics2D) g;
     g.setColor(c.getBackground().darker());
     g.fillRoundRect(0, yOffset ,size.width,size.height -yOffset,10,10);
-    g.setColor(c.getBackground());
+    if(yOffset==0) g.setColor(c.getBackground());
+    else g.setColor(c.getBackground().darker());
     g.fillRoundRect(0, yOffset ,size.width,size.height -yOffset-5,10,10);
 
   }
