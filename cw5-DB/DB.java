@@ -1,54 +1,87 @@
+//at the moment allows duplicate table name do smthng about it
+//id Records
+
+import javax.swing.*;
 import java.util.*;
 
 class DB{
-  public static final int decimal = 10;
-  public static final int entire = -1;
+  public static final int NOT_EXIST  = -1;
+  public static final int ENTIRE  = -1;
+  public static final int DECIMAL = 10;
+  //---Base Menu Switch
+  public static final int RECORD  = 1;
+  public static final int TABLE   = 2;
+  public static final int PRINT   = 3;
+  public static final int SAVE    = 4;
+  public static final int LOAD    = 5;
+  public static final int TEST    = 6;
+  public static final int QUIT    = 0;
+  //---Record Menu Switch
+  public static final int R_NEW   = 1;
+  public static final int R_RMV   = 2;
+  public static final int R_RET_INDEX = 4;
+  public static final int R_RET_VALUE = 5;
+  //---Table Menu Switch
+  public static final int T_NEW    = 1;
+  public static final int T_RMV    = 2;
+  public static final int T_RENAME = 4;
+
   private List<Table> dbase = new ArrayList<Table>();
-  private IOF file = new IOF("data/example.db");
-  private Defin def;
-    public static void main(String args[]){
+  public static void main(String args[]){
     DB db=new DB();
+    // SwingUtilities.invokeLater(db::run);
     Scanner in = new Scanner(System.in);
     boolean cntrl=true;
     while(cntrl==true){
-      printInstructions();
       int cases=-1;
-      cases=parseIn(in);
       int tableNum;
       int numOfFields;
-      cntrl=db.control(in,cases-1);
+      printInstructions();
+      cases=parseIn(in);
+      cntrl=db.control(in,cases);
     }
+  }
+  private void run(){
+    JFrame w = new JFrame();
+    GUI gui = new GUI();
+    boolean finished = false;
+    w.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    w.setTitle("Simple Database");
+    w.add(gui.frame);
+    w.pack();
+    w.setLocationByPlatform(true);
+    w.setVisible(true);
   }
   private static int parseIn(Scanner in){
     int cases=10;
     try{
-      cases=Integer.parseInt(in.next(),decimal);
+      cases=Integer.parseInt(in.next(), DECIMAL);
     } catch(Exception e){System.out.println("please stop messing around");}
     return cases;
   }
   private boolean control(Scanner in, int cases){
       switch (cases) {
-      case 0:
+      case RECORD:
         controlRecord(in);
         break;
-      case 1:
+      case TABLE:
         controlTable(in);
         break;
-      case 2:
-        for(Table tab: dbase){
-          tab.printTable(entire);
-        }
+      case PRINT:
+        controlPrint();
         break;
-      case 3:
-        System.out.println("saving...");
-        for(Table tab: dbase){
-          file.write(0,tab.saveTable());
-        }
+      case SAVE:
+        controlSave();
         break;
-      case 4:
+      case LOAD:
+        System.out.println("Provide the name of the file to be loaded");
+        Table temp=new Table("");
+        dbase.add(temp.loadTable(in.next()));
+        break;
+      case TEST:
         testing();
         break;
-      case 8:
+      case QUIT:
         return false;
       default:
         break;
@@ -59,51 +92,23 @@ class DB{
    boolean cntrl=true;
     while(cntrl==true){
       printInstructionsRecord();
-      switch (parseIn(in)-1) {
-        case 0:
+      switch (parseIn(in)) {
+        case R_NEW:
           newRecord(in);
           break;
-        case 1:
+        case R_RMV:
           removeRecord(in);
           break;
-        case 2:
-          dbase.get(0).printTable(entire);
+        case PRINT:
+          dbase.get(0).printTable(ENTIRE);
           break;
-        case 3:
+        case R_RET_INDEX:
           retrieveIndex(in);
           break;
-        case 4:
+        case R_RET_VALUE:
           retrieveValue(in);
           break;
-        case 8:
-          cntrl=false;
-          break;
-        default:
-          break;
-      }
-    }
-    return true;
-  }
-  private boolean controlTable(Scanner in){
-   boolean cntrl=true;
-    while(cntrl==true){
-      printInstructionsTable();
-      switch (parseIn(in)-1) {
-        case 0:
-          newTable(in);
-          break;
-        case 1:
-          removeTable(in);
-          break;
-        case 2:
-          System.out.println("Chose the name of table to be printed");
-          getTableNames("Chose from:");
-          dbase.get(returnTableByName(in.next())).printTable(entire);
-          break;
-        case 3:
-          addTestTable();
-          break;
-        case 8:
+        case QUIT:
           cntrl=false;
           break;
         default:
@@ -114,25 +119,63 @@ class DB{
   }
   private void newRecord(Scanner in){
     printInstructionsNewRecord();
-    System.out.println("this is the size "+dbase.size());
+    getTableNames("the tables are ");
     int tableNum =  returnTableByName(in.next());
     int numOfFields=dbase.get(tableNum).numOfFields;
     dbase.get(tableNum).addEntry(new Record(numOfFields,in.next()));
   }
   private void removeRecord(Scanner in){
     printInstructionsRmvRecord();
-    getTableNames("the tables are ");
+    getTableNames("the tables are: ");
     int tableNum =  returnTableByName(in.next());
-    int entryNum = Integer.parseInt(in.next())-1;
+    int entryNum = parseIn(in)-1;
     dbase.get(tableNum).removeEntry(entryNum);
   }
-  private int returnTableByName(String name){
-    int i=0;
-    for (Table tab: dbase){
-      if(tab.getName().equals(name)) return i;
-      i++;
+  private void retrieveIndex(Scanner in){
+    printInstructionsRetrieveIndex();
+    int tableNum = returnTableByName(in.next());
+    int entryNum = parseIn(in)-1;
+    dbase.get(tableNum).printTable(entryNum);
+  }
+  private void retrieveValue(Scanner in){
+    printInstructionsRetrieveValue();
+    int tableNum = returnTableByName(in.next());
+    List<Integer> entryNum = dbase.get(tableNum).indexOfTable(in.next());
+    System.out.println("entry: " + entryNum +" Tablenum: " + tableNum);
+    for(int i:entryNum){
+      dbase.get(tableNum).printTable(i);
     }
-    return -1;
+  }
+  private boolean controlTable(Scanner in){
+   boolean cntrl=true;
+    while(cntrl==true){
+      printInstructionsTable();
+      switch (parseIn(in)) {
+        case T_NEW:
+          newTable(in);
+          break;
+        case T_RMV:
+          removeTable(in);
+          break;
+        case PRINT:
+          System.out.println("Chose the name of table to be printed");
+          getTableNames("Chose from:");
+          dbase.get(returnTableByName(in.next())).printTable(ENTIRE);
+          break;
+        case TEST:
+          addTestTable();
+          break;
+        case T_RENAME:
+           renameTable(in);
+           break;
+        case QUIT:
+          cntrl=false;
+          break;
+        default:
+          break;
+      }
+    }
+    return true;
   }
   private void newTable(Scanner in){
     printInstructionsNewTable();
@@ -147,42 +190,75 @@ class DB{
     int tableNum = returnTableByName(in.next());
     dbase.remove(tableNum);
   }
-  private void retrieveIndex(Scanner in){
-    printInstructionsRetrieve();
-    int tableNum = returnTableByName(in.next());
-    int entryNum = Integer.parseInt(in.next())-1;
-    dbase.get(tableNum).printTable(entryNum);
-
-    // System.out.println(dbase.get(tableNum).returnEntry(entryNum).values);
-  }
-  private void retrieveValue(Scanner in){
-    printInstructionsRetrieve();
-    int tableNum = returnTableByName(in.next());
-    List<Integer> entryNum = dbase.get(tableNum).indexOfTable(in.next());
-    System.out.println("entry: " + entryNum +" Tablenum: " + tableNum);
-    for(int i:entryNum){
-      dbase.get(tableNum).printTable(i);
+  private int returnTableByName(String name){
+    int i=0;
+    for (Table tab: dbase){
+      if(tab.getName().equals(name)) return i;
+      i++;
     }
-    // System.out.println(dbase.get(tableNum).returnEntry(entryNum).values);
+    return NOT_EXIST;
+  }
+  private void renameTable(Scanner in){
+    printInstructionsRnmTable();
+    int tableNum = returnTableByName(in.next());
+    dbase.get(tableNum).rename(in.next());
+  }
+  private void controlPrint(){
+    System.out.println("printing...");
+    for(Table tab: dbase){
+      tab.printTable(ENTIRE);
+    }
+  }
+  private void controlSave(){
+    System.out.println("saving...");
+    for(Table tab: dbase){
+      tab.saveTable();
+    }
+  }
+  private void getTableNames(String str){
+    System.out.println(str);
+    for(Table tab: dbase){
+      System.out.println(tab.getName());
+    }
+
+  }
+  // -----------Testing------------------
+  public int getDBsize(){
+    return dbase.size();
+  }
+  private void addTestTable(){
+    System.out.println("creating table: \n animals(String name, String type)");
+    dbase.add(new Table("animals",2,"name,type"));
+    dbase.get(0).addEntry(new Record(2,"Wanda,fish"));
+    dbase.get(0).addEntry(new Record(2,"Lassy,dog"));
+  }
+  private void testing(){
+    Tester t=new Tester();
+    t.run();
   }
 
+
+  // -----------Instructions--------------
   private static void printInstructions(){
     System.out.println("Usage:");
-    System.out.println("1: Records, 2: Tables, 3: print all, 4: save, 5:test 9: exit");
+    System.out.println("1: Records, 2: Tables, 3: print all, 4: save, 5:load table, 6:test 0: exit");
   }
   private static void printInstructionsRecord(){
-    System.out.println("1: Add record, 2: Remove record, 3: print all, 4: retrieve value by index, 5: retrieve value by query, 9: back");
+    System.out.println("1: Add record, 2: Remove record, 3: print all, 4: retrieve value by index, 5: retrieve value by query, 0: back");
   }
   private static void printInstructionsTable(){
-    System.out.println("1: Add table, 2: Remove table, 3: print, 4:add example Table, 9: back");
+    System.out.println("1: Add table, 2: Remove table, 3: print, 6:add example Table, 0: back");
   }
-
-  private static void printInstructionsRetrieve(){
+  private static void printInstructionsRetrieveIndex(){
     System.out.println("First declare the name of the table");
     System.out.println("Then the number of the entry");
-    System.out.println("eg. 3 10");
+    System.out.println("eg. animals 10");
   }
-
+  private static void printInstructionsRetrieveValue(){
+    System.out.println("First declare the name of the table");
+    System.out.println("Then a value cantained in the entry");
+    System.out.println("eg. animals dog");
+  }
   private static void printInstructionsNewTable(){
     System.out.println("First declare the name and number of fields");
     System.out.println("Then the name of each column separeted by commas");
@@ -191,7 +267,9 @@ class DB{
   private static void printInstructionsRmvTable(){
     System.out.println("Input the name of the table you want to remove");
   }
-
+  private static void printInstructionsRnmTable(){
+    System.out.println("Input the name of the table you want to rename and the new name");
+  }
   private static void printInstructionsNewRecord(){
     System.out.println("Select table name");
     System.out.println("Then insert the exact number of \nvalues as the columns in the table");
@@ -201,27 +279,6 @@ class DB{
     System.out.println("Select table name");
     System.out.println("Then insert the number of the record you want to remove");
     System.out.println("eg. Student 3");
-  }
-  public int getDBsize(){
-    return dbase.size();
-  }
-  private void getTableNames(String str){
-    System.out.println(str);
-    for(Table tab: dbase){
-      System.out.println(tab.getName());
-    }
-
-  }
-  private void addTestTable(){
-    System.out.println("creating table: \n animals(String name, String type)");
-    dbase.add(new Table("animals",2,"name,type"));
-    dbase.get(0).addEntry(new Record(2,"Wanda,fish"));
-    dbase.get(0).addEntry(new Record(2,"Lassy,dog"));
-  }
-// -----------Testing------------------
-  private void testing(){
-    Tester t=new Tester();
-    t.run();
   }
 
 }

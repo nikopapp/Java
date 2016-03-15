@@ -1,8 +1,8 @@
 import java.util.*;
 
 class Record extends Token{
-  int numOfFields;
-  String valuesIn;
+  private int numOfFields;
+  private String valuesIn;
   List<String> values = new ArrayList<String>();
   Record(int numOfFields, String valuesIn){
     super(numOfFields,valuesIn);

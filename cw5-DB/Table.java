@@ -1,6 +1,8 @@
 import java.util.*;
-
 class Table extends Token{
+
+  private static final int TITLE = 0;
+  private static final int COLUMNS = 1;
   int numOfFields;
   boolean valid;
   private String name;
@@ -12,6 +14,9 @@ class Table extends Token{
     this.numOfFields=numOfFields;
     this.columns=tokens;
     this.valid=checkforDuplicates(tokens);
+  }
+  Table(String name){
+    this.name=name;
   }
   private boolean checkforDuplicates(List<String> tokens){
     int cnt=0;
@@ -31,6 +36,7 @@ class Table extends Token{
     entries.remove(e);
   }
   public void printTable(int index){
+    System.out.println(name);
     System.out.println(columns);
     System.out.println("---------------------------");
     if(index==-1){
@@ -43,10 +49,39 @@ class Table extends Token{
     }
     System.out.println();
   }
-  public String saveTable(){
-    String table=new String();
-    for( Record str: entries){
-      table = table+str.values+'\n';
+  public void saveTable(){
+    IOF file = new IOF(name+".txt");
+    String table=new String(name+"\n");
+    System.out.println(table);
+    for(int i=0;i<columns.size();i++){
+      table = table+columns.get(i);
+      if(i<columns.size()-1) table=table+",";
+    }
+    System.out.println(table);
+    table=table+"\n";
+    System.out.println(table);
+    for(Record r: entries){
+      for(int i=0;i<r.values.size();i++){
+        table = table+r.values.get(i);
+        if(i<r.values.size()-1) table=table+",";
+      }
+      table=table+"\n";
+    }
+    System.out.println(table);
+    file.write(0,table);
+  }
+
+  public Table loadTable(String name){
+    IOF file = new IOF(name+".txt");
+    String tableIn=new String();
+    tableIn = file.read(0);
+    String[] tokens=tableIn.split("\\\n");
+    Table table = new Table(tokens[TITLE]);
+    Token t = new Token(tokens[COLUMNS]);
+    table.columns=t.tokens;
+    for (int i=2;i<tokens.length;i++){
+      System.out.println(tokens[i]);
+      table.addEntry(new Record(table.columns.size() , tokens[i]));
     }
     return table;
   }
@@ -67,6 +102,9 @@ class Table extends Token{
   }
   public boolean isName(String name){
     return this.name.equals(name);
+  }
+  public void rename(String newName){
+    this.name=newName;
   }
   public List<Integer> indexOfTable(String name){
     int i=0;

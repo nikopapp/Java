@@ -1,20 +1,29 @@
 // import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.io.*;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 class IOF{
   private String filename;
-
+  private String folder=new String("data/");
   IOF(String filename){
-    this.filename=filename;
+    this.filename=folder+filename;
   }
 
   public void write(int position, String record){
-    writeToRandomAccessFile(filename,position,record);
+      File file=new File(folder);
+      file.mkdirs();
+      delete(filename);
+      writeToRandomAccessFile(filename,position,record);
+
   }
   public String read(int position){
     return readFromRandomAccessFile(filename,position);
+  }
+  private void delete(String file){
+    File f = new File(file);
+    f.delete();
   }
   private static String readFromRandomAccessFile(String file, int position) {
     String record = null;

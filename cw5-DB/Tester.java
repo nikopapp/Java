@@ -2,19 +2,12 @@ class Tester{
   private int numTests = 0;
   private int tests = 0;
   void run(){
-    test_Record();
     test_Table();
     test_DB();
     result();
   }
   void result() {
     System.out.println("Tests passed " + tests+" of "+numTests);
-  }
-  private void test_Record(){
-    Record r = new Record(2,"nikos,cat");
-    is(r.values.size(),2);
-    is(r.values.get(0),"nikos");
-    is(r.values.get(1),"cat");
   }
   private void test_Table(){
     Table t = new Table("Cohort", 3,"Student,unit,grade");
