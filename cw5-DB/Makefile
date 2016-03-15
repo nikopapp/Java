@@ -14,3 +14,9 @@ runJar:
 	java -jar DB.jar
 test:
 	./test.sh
+push:
+	git commit -a -m $$(date +%d-%m-%Y/%H:%M)
+	git push
+pull:
+	git pull
+

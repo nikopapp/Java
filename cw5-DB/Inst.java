@@ -16,12 +16,12 @@ class Inst{
     }
     public static void printInstructionsRetrieveValue(){
       System.out.println("First declare the name of the table");
-      System.out.println("Then a value cantained in the entry");
+      System.out.println("Then a value contained in the entry");
       System.out.println("eg. animals dog");
     }
     public static void printInstructionsNewTable(){
       System.out.println("First declare the name and number of fields");
-      System.out.println("Then the name of each column separeted by commas");
+      System.out.println("Then the name of each column separated by commas (without spaces).");
       System.out.println("eg. Cohort 3 \nstudent,unit,grade");
     }
     public static void printInstructionsRmvTable(){
@@ -32,7 +32,7 @@ class Inst{
     }
     public static void printInstructionsNewRecord(){
       System.out.println("Select table name");
-      System.out.println("Then insert the exact number of \nvalues as the columns in the table");
+      System.out.println("Then insert the exact number of \nvalues as the columns in the table, separated by commas (without spaces).");
       System.out.println("eg. Student \nNikos,Databases,95");
     }
     public static void printInstructionsRmvRecord(){
