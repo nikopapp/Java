@@ -4,6 +4,7 @@
 import javax.swing.*;
 import java.util.*;
 
+
 class DB{
   public static final int NOT_EXIST  = -1;
   public static final int ENTIRE  = -1;
@@ -29,16 +30,16 @@ class DB{
   private List<Table> dbase = new ArrayList<Table>();
   public static void main(String args[]){
     DB db=new DB();
-    // SwingUtilities.invokeLater(db::run);
+    SwingUtilities.invokeLater(db::run);
     Scanner in = new Scanner(System.in);
     boolean cntrl=true;
     while(cntrl==true){
       int cases=-1;
       int tableNum;
       int numOfFields;
-      printInstructions();
-      cases=parseIn(in);
-      cntrl=db.control(in,cases);
+      // printInstructions();
+      // cases=parseIn(in);
+      // cntrl=db.control(in,cases);
     }
   }
   private void run(){
@@ -88,7 +89,8 @@ class DB{
     }
     return true;
   }
-  private boolean controlRecord(Scanner in){
+  //restore private identifier
+   boolean controlRecord(Scanner in){
    boolean cntrl=true;
     while(cntrl==true){
       printInstructionsRecord();
@@ -117,7 +119,7 @@ class DB{
     }
     return true;
   }
-  private void newRecord(Scanner in){
+  void newRecord(Scanner in){
     printInstructionsNewRecord();
     getTableNames("the tables are ");
     int tableNum =  returnTableByName(in.next());
@@ -146,7 +148,8 @@ class DB{
       dbase.get(tableNum).printTable(i);
     }
   }
-  private boolean controlTable(Scanner in){
+//restore private spacificatior
+   boolean controlTable(Scanner in){
    boolean cntrl=true;
     while(cntrl==true){
       printInstructionsTable();
@@ -203,13 +206,14 @@ class DB{
     int tableNum = returnTableByName(in.next());
     dbase.get(tableNum).rename(in.next());
   }
-  private void controlPrint(){
+  //restore private identifier
+   void controlPrint(){
     System.out.println("printing...");
     for(Table tab: dbase){
       tab.printTable(ENTIRE);
     }
   }
-  private void controlSave(){
+   void controlSave(){
     System.out.println("saving...");
     for(Table tab: dbase){
       tab.saveTable();

@@ -2,10 +2,14 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.util.*;
+import java.awt.event.*;
+
 
 
 class GUI extends JPanel {
   private static final long serialVersionUID = 1L;
+  private DB dbasegui = new DB();
+  Scanner in = new Scanner(System.in);
   GUI(){
     setPreferredSize(new Dimension(400,300));
   }
@@ -43,6 +47,33 @@ class GUI extends JPanel {
     buttons.add(new JButton("Tables"));
     buttons.add(new JButton("Print"));
     buttons.add(new JButton("Save"));
+    buttons.add(new JButton("Load"));
+    buttons.add(new JButton("Back"));
+    buttons.get(0).addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+        {
+          dbasegui.controlRecord(in);
+        }
+      });
+    buttons.get(1).addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+        {
+          dbasegui.controlTable(in);
+        }
+      });
+
+    buttons.get(2).addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+        {
+          dbasegui.controlPrint();
+        }
+      });
+    buttons.get(4).addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e)
+        {
+          dbasegui.controlSave();
+        }
+      });
     box.setLayout(grid);
     for (JButton but:buttons){
       but.setForeground(Color.white);
