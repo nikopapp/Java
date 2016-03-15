@@ -3,7 +3,7 @@ class Table extends Token{
 
   private static final int TITLE = 0;
   private static final int COLUMNS = 1;
-  int numOfFields;
+  private int numOfFields;
   boolean valid;
   private String name;
   private List<String> columns = new ArrayList<String>();
@@ -36,7 +36,7 @@ class Table extends Token{
     entries.remove(e);
   }
   public void printTable(int index){
-    System.out.println(name);
+    System.out.println(name+" Width:"+numOfFields);
     System.out.println(columns);
     System.out.println("---------------------------");
     if(index==-1){
@@ -79,6 +79,7 @@ class Table extends Token{
     Table table = new Table(tokens[TITLE]);
     Token t = new Token(tokens[COLUMNS]);
     table.columns=t.tokens;
+    table.numOfFields=table.columns.size();
     for (int i=2;i<tokens.length;i++){
       System.out.println(tokens[i]);
       table.addEntry(new Record(table.columns.size() , tokens[i]));
@@ -94,9 +95,6 @@ class Table extends Token{
   public Record returnEntryIndex(int i){
     return entries.get(i);
   }
-  // public Record returnEntryValue(String str){
-  //   return entries.indexOf(values.str);
-  // }
   public String getName(){
     return this.name;
   }

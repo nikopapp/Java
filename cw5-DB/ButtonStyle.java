@@ -19,11 +19,15 @@ class ButtonStyle extends BasicButtonUI {
   private void paintBackground(Graphics g, JComponent c, int yOffset){
     Dimension size = c.getSize();
     Graphics2D g2 = (Graphics2D) g;
+    RenderingHints rh = new RenderingHints(
+      RenderingHints.KEY_ANTIALIASING,
+      RenderingHints.VALUE_ANTIALIAS_ON);
+    g2.setRenderingHints(rh);
     g.setColor(c.getBackground().darker());
-    g.fillRoundRect(0, yOffset ,size.width,size.height -yOffset,10,10);
+    g.fillRoundRect(0, yOffset ,size.width,size.height -yOffset,8,8);
     if(yOffset==0) g.setColor(c.getBackground());
     else g.setColor(c.getBackground().darker());
-    g.fillRoundRect(0, yOffset ,size.width,size.height -yOffset-5,10,10);
+    g.fillRoundRect(0, yOffset ,size.width,size.height -yOffset-4,8,8);
 
   }
 

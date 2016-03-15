@@ -1,8 +1,12 @@
 
 
 compile:
-	javac -g DB.java
+	javac -g GUI.java
 run:
+	java GUI
+compileConsole:
+	javac -g DB.java
+runConsole: 
 	java DB
 jar:
 	jar -cvfm DB.jar Manifest.txt *.class
