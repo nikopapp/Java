@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.awt.FlowLayout;
 import java.awt.Color;
 import javax.swing.*;
+import javax.swing.border.*;
 import java.io.*;
 import javax.imageio.ImageIO;
 
@@ -39,6 +40,7 @@ public class Explain{
       frame.setSize(500,600);
       frame.setLocationByPlatform(true);
       frame.add(st);
+      frame.add(navFrame());
       frame.pack();
       // frame.setUndecorated(true);
       frame.setVisible(true);
@@ -48,6 +50,48 @@ public class Explain{
       tx.setWindowSize(frame.getBounds());
       st.setWindowSize(frame.getBounds());
     }
+    private Box navFrame(){
+    Border border = BorderFactory.createEmptyBorder(10,10,10,10);
+    Box box = Box.createHorizontalBox();
+    //necessary for the image to be loaded directly from the jar file
+    // URL resource = getClass().getClassLoader().getResource("logo/logo.png");
+    // JLabel logo = new JLabel(new ImageIcon(resource));
+    // box.add(logo);
+    box.add(navButtons());
+    box.setBorder(border);
+    return box;
+  }
+  private JPanel navButtons(){
+    GridLayout grid = new GridLayout(3,4,10,10);
+   JPanel box = new JPanel();
+   box.setBackground(new Color(0xFDFADF));
+   ButtonStyle bStyle = new ButtonStyle();
+   JButton[] buttons =  new JButton[30];
+   buttons[DB.R_NEW] =  new JButton("Add Record");
+   buttons[DB.R_RMV] =  new JButton("Remove Record");
+   buttons[DB.R_RET_INDEX] = new JButton("By Index");
+   buttons[DB.R_RET_VALUE] = new JButton("By Value");
+   buttons[DB.T_NEW] =  new JButton("Add Table");
+   buttons[DB.T_RMV] =  new JButton("Remove Table");
+   buttons[DB.T_TEST] = new JButton("Test Table");
+   buttons[DB.PRINT_ALL] =  new JButton("Print All");
+   buttons[DB.PRINT] =  new JButton("Print One");
+   buttons[DB.SAVE] =   new JButton("Save");
+   buttons[DB.LOAD] =   new JButton("Load");
+   buttons[DB.T_RENAME] = new JButton("Rename Table");
+   buttonAddAction(buttons);
+   box.setLayout(grid);
+   for (JButton but:buttons){
+     if(but!=null){
+       but.setForeground(Color.white);
+       but.setBackground(new Color(0xAABBAA));
+       but.setUI(bStyle);
+       box.add(but);
+     }
+   }
+   return box;
+ }
+  }
     class Animation implements ActionListener {
       public void actionPerformed(ActionEvent e) {
         switch (sceneCnt){
