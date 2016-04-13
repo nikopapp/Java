@@ -167,6 +167,9 @@ class Story extends JPanel{
       this.windowHeight = size.height;
       this.windowWidth  = size.width;
     }
+    public void reset(){
+      Y2=0;
+    }
 
         // private static BufferedImage loadImage(String url){
         //   BufferedImage img = null;
