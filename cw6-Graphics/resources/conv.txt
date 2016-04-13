@@ -1,0 +1,22 @@
+In mathematics and, in particular, functional analysis, convolution is
+a mathematical operation on two functions f and g, producing a third
+function that is typically viewed as a modified version of one of the
+original functions, giving the integral of the pointwise multiplication
+of the two functions as a function of the amount that one of the original
+functions is translated. Convolution is similar to cross-correlation.
+It has applications that include probability, statistics, computer vision,
+natural language processing, image and signal processing, engineering, and
+differential equations.
+
+The convolution can be defined for functions on groups other than Euclidean space.
+For example, periodic functions, such as the discrete-time Fourier transform,
+can be defined on a circle and convolved by periodic convolution.
+A discrete convolution can be defined for functions on the set of integers.
+Generalizations of convolution have applications in the field of numerical
+analysis and numerical linear algebra, and in the design and implementation
+of finite impulse response filters in signal processing.
+
+Computing the inverse of the convolution operation is known as deconvolution.
+
+
+Source: https://en.wikipedia.org/wiki/Convolution

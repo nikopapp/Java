@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
+import java.net.*;
 
 import java.awt.event.*;
 
@@ -26,7 +27,9 @@ class GUI extends JPanel {
   private Box mainFrame(){
     Border border = BorderFactory.createEmptyBorder(10,10,10,10);
     Box box = Box.createHorizontalBox();
-    JLabel logo = new JLabel(new ImageIcon("logo/logo.png"));
+    //necessary for the image to be loaded directly from the jar file
+    URL resource = getClass().getClassLoader().getResource("logo/logo.png");
+    JLabel logo = new JLabel(new ImageIcon(resource));
     box.add(logo);
     box.add(mainButtons());
     box.setBorder(border);

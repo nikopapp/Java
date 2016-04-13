@@ -17,8 +17,10 @@ class Oxo {
         boolean nextTurn;
         d.drawGraph(b.board,p.player);
         d.Display(b.board);
-        d.getInput(p.player);
-        p.setPos(d.position);
+        while(d.action == false){
+        // d.getInput(p.player);
+        if(p.x!= -1) p.setPos(d.position);
+       }
         nextTurn = b.addPond(p.y, p.x, p.player);
 //---------------------PLAYER change
         if (nextTurn==true) {

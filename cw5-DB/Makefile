@@ -9,7 +9,7 @@ compileConsole:
 runConsole: 
 	java DB
 jar:
-	jar -cvfm DB.jar Manifest.txt *.class
+	jar -cvfm DB.jar Manifest.txt *.class logo/logo.png
 runJar:
 	java -jar DB.jar
 test:

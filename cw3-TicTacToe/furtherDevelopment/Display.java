@@ -4,7 +4,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Display extends JFrame {
+public class Display extends JFrame{
+  private static final long serialVersionUID = 1L;
   private int windowHeight = 400;
   private int windowWidth  = 540;
   private final int cellSize   = 60;
@@ -19,11 +20,13 @@ public class Display extends JFrame {
   private final int commentFontSize = 15;
   private int boardXo    = (windowWidth-boardWidth)/2;
   private int boardYo    = (windowHeight-boardWidth)/2;
-  private JPanel panel = new JPanel();
+  public int x;
+  public int y;
+  public boolean action;
+  public String position;
   //----backup titleFont
   Font font = new Font("Arial", Font.BOLD, (int) titleFontSize);
   Font commentFont = new Font("Arial", Font.PLAIN, commentFontSize);
-  String position;
 
   public Display (int windowHeight, int windowWidth){
     this.windowHeight = windowHeight;
@@ -31,9 +34,19 @@ public class Display extends JFrame {
     this.boardXo =(windowWidth-boardWidth)/2;
     this.boardYo = (windowHeight-boardWidth)/2;
     this.commentYo = 4*windowHeight/5;
+    this.addMouseListener((MouseClicker)this::click);
+    this.action=false;
   }
   public Display (){
   }
+  public void click(MouseEvent e) {
+    x = (e.getX()-308) / 60;
+    y = (e.getY()-158) / 60;
+    position=""+x+y;
+    System.out.println(x+","+y +" posit:"+position);
+    this.action=true;
+}
+
   // output to terminal
   public void Display(char[][] board){
     char indexY='A';
@@ -137,8 +150,10 @@ public class Display extends JFrame {
   public void getInput(char player){
     Scanner in = new Scanner(System.in);
     System.out.print("player "+player+"'s move: ");
-    position = in.next();
-    this.position = position.toUpperCase();
+    position = ""+x+y;
+    System.out.println(position);
+    // this.position = position.toUpperCase();
+    action=false;
   }
   private void sleep(int Milisecs){
     try
