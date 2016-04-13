@@ -8,7 +8,7 @@ class TextScrolling extends JPanel{
   private static final long serialVersionUID = 2L;
   private static final int lineSize = 30;
   private boolean running = false;
-  public int windowHeight = 500;
+  public int windowHeight = 650;
   public int windowWidth  = 800;
   private int textX0 = 40;
   private double textY0 = windowHeight;
@@ -16,7 +16,7 @@ class TextScrolling extends JPanel{
   private Color grayBg = new Color(50,50,50);
   private Color trans = new Color(0,0,0,0);
   private Color yelltext = new Color(150,150,100);
-  private Font fontText = new Font("Dialog",Font.PLAIN,20);
+  private Font fontText = new Font("Dialog",Font.PLAIN,18);
   private RenderingHints rh = ToolKit.configRHints();
   TextScrolling(){
     super();
@@ -49,8 +49,11 @@ class TextScrolling extends JPanel{
 
       }catch(Exception e){}
   }
-  public void setRunning(){
-    this.running=true;
+  public void start(){
+    this.running = true;
+  }
+  public void stop(){
+    this.running = false;
   }
   public boolean isRunning(){
     return running ? true : false;

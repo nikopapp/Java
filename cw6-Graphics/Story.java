@@ -10,7 +10,7 @@ class Story extends JPanel{
   private Rectangle2D.Double rect = new Rectangle2D.Double(100,75,200,160);
   private AffineTransform at = new AffineTransform();
   private static final long serialVersionUID = 1L;
-  public int windowHeight = 500;
+  public int windowHeight = 650;
   public int windowWidth  = 800;
   private Polygon flashlight;
   private Line2D line;

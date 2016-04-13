@@ -12,15 +12,16 @@ public class Explain{
   Story st;
   TextScrolling tx;
   Box mainFrame;
-  private JFrame frame = new JFrame("Learn about Artificial Neural Netwroks");
+  JFrame frame = new JFrame("Learn about Artificial Neural Netwroks");
+  int sceneCnt = 0;
   Explain(){
     st = new Story();
     tx = new TextScrolling();
   }
-  private Explain ex = new Explain();
   public static void main(String[] args){
-    Explain program = new Explain();
-    SwingUtilities.invokeLater(program.new Scene());
+    // Explain program = new Explain();
+    // SwingUtilities.invokeLater(program.new Scene());
+    // ------------------------------------
     // frame.getContentPane().add(st);
     // // BufferedImage img = loadImage("resources/slime.png");
     // // frame.getContentPane().setLayout(new FlowLayout());
@@ -31,7 +32,6 @@ public class Explain{
   }
   class Scene implements Runnable {
     private boolean slide1=false;
-    private int sceneCnt = 0;
     public void run() {
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setBackground(grayBg);
@@ -39,7 +39,7 @@ public class Explain{
       // frame.setSize(500,600);
       frame.setLocationByPlatform(true);
       // frame.add(st);
-      mainFrame=navFrame(st);
+      // mainFrame=navFrame(st);
       frame.add(mainFrame);
       frame.pack();
       // frame.setUndecorated(true);
@@ -50,12 +50,6 @@ public class Explain{
       tx.setWindowSize(frame.getBounds());
       st.setWindowSize(frame.getBounds());
     }
-    private void gotoSlide1(ActionEvent e){
-    System.out.println("gotoSlide1");
-    sceneCnt=0;
-    st.reset();
-    mainFrame=navFrame(st);
-  }
 
     class Animation implements ActionListener {
       public void actionPerformed(ActionEvent e) {
@@ -71,23 +65,18 @@ public class Explain{
             break;
         }
       }
-      private void slide1(){
-        if(st.lineGrowing()==false) sceneCnt++;
-      }
-      private void slide2(){
-        if(!tx.isRunning()){
-          tx.setRunning();
-          changeScene();
-          tx.repaint();
-        }
-        else tx.scroll();
-      }
-      private void changeScene(){
-        mainFrame.remove(st);
-        mainFrame.add(tx);
-        frame.pack();
-      }
     }
+    }
+    public void slide1(){
+      if(st.lineGrowing()==false) sceneCnt++;
+    }
+    public void slide2(){
+      tx.scroll();
+    }
+    public void changeScene(){
+      mainFrame.remove(st);
+      mainFrame.add(tx);
+      frame.pack();
   }
 }
   //------------------------------------------------------
