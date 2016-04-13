@@ -22,15 +22,15 @@ class GUI extends JPanel {
     // JFrame w = new JFrame()
     storyline.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     storyline.frame.setTitle("Introduction to Image Proccessing");
-    mainFrame=navFrame(storyline.st);
-    storyline.frame.add(mainFrame);
+    // mainFrame=navFrame();
+    storyline.frame.add(navFrame());
     // storyline.frame.add()
     storyline.frame.pack();
     storyline.frame.setLocationByPlatform(false);
     storyline.frame.setVisible(true);
     t.start();
   }
-  private Box navFrame(JPanel something){
+  private Box navFrame(){
     Border border = BorderFactory.createEmptyBorder(10,10,10,10);
     Box box = Box.createHorizontalBox();
     //necessary for the image to be loaded directly from the jar file
@@ -38,7 +38,7 @@ class GUI extends JPanel {
     // JLabel logo = new JLabel(new ImageIcon(resource));
     // box.add(logo);
     box.add(navButtons());
-    box.add(something);
+    // box.add(something);
     box.setBorder(border);
     return box;
   }
@@ -72,14 +72,14 @@ class GUI extends JPanel {
     storyline.sceneCnt=0;
     storyline.st.reset();
     // mainFrame=navFrame(storyline.st
-    storyline.frame.add(navFrame(storyline.st),1);
+    storyline.frame.add(storyline.st,1);
     storyline.frame.revalidate();
   }
   private void gotoSlide2(ActionEvent e){
     System.out.println("gotoSlide2");
     storyline.sceneCnt=1;
     storyline.frame.remove(1);
-    storyline.frame.add(navFrame(storyline.tx),2);
+    storyline.frame.add(storyline.tx,1);
     storyline.frame.revalidate();
   }
   class Animation implements ActionListener {
