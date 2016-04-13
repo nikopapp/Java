@@ -1,9 +1,6 @@
 import java.awt.event.*;
-import java.awt.Graphics;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.FlowLayout;
-import java.awt.Color;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.io.*;
@@ -63,23 +60,23 @@ public class Explain{
   }
   private JPanel navButtons(){
     GridLayout grid = new GridLayout(3,4,10,10);
-   JPanel box = new JPanel();
-   box.setBackground(new Color(0xFDFADF));
-   ButtonStyle bStyle = new ButtonStyle();
-   JButton[] buttons =  new JButton[30];
-   buttons[DB.R_NEW] =  new JButton("Add Record");
-   buttons[DB.R_RMV] =  new JButton("Remove Record");
-   buttons[DB.R_RET_INDEX] = new JButton("By Index");
-   buttons[DB.R_RET_VALUE] = new JButton("By Value");
-   buttons[DB.T_NEW] =  new JButton("Add Table");
-   buttons[DB.T_RMV] =  new JButton("Remove Table");
-   buttons[DB.T_TEST] = new JButton("Test Table");
-   buttons[DB.PRINT_ALL] =  new JButton("Print All");
-   buttons[DB.PRINT] =  new JButton("Print One");
-   buttons[DB.SAVE] =   new JButton("Save");
-   buttons[DB.LOAD] =   new JButton("Load");
-   buttons[DB.T_RENAME] = new JButton("Rename Table");
-   buttonAddAction(buttons);
+    JPanel box = new JPanel();
+    box.setBackground(new Color(0xFDFADF));
+    ButtonStyle bStyle = new ButtonStyle();
+    JButton[] buttons =  new JButton[30];
+    buttons[0] =  new JButton("Add Record");
+  //  buttons[DB.R_RMV] =  new JButton("Remove Record");
+  //  buttons[DB.R_RET_INDEX] = new JButton("By Index");
+  //  buttons[DB.R_RET_VALUE] = new JButton("By Value");
+  //  buttons[DB.T_NEW] =  new JButton("Add Table");
+  //  buttons[DB.T_RMV] =  new JButton("Remove Table");
+  //  buttons[DB.T_TEST] = new JButton("Test Table");
+  //  buttons[DB.PRINT_ALL] =  new JButton("Print All");
+  //  buttons[DB.PRINT] =  new JButton("Print One");
+  //  buttons[DB.SAVE] =   new JButton("Save");
+  //  buttons[DB.LOAD] =   new JButton("Load");
+  //  buttons[DB.T_RENAME] = new JButton("Rename Table");
+  //  buttonAddAction(buttons);
    box.setLayout(grid);
    for (JButton but:buttons){
      if(but!=null){
@@ -91,7 +88,7 @@ public class Explain{
    }
    return box;
  }
-  }
+
     class Animation implements ActionListener {
       public void actionPerformed(ActionEvent e) {
         switch (sceneCnt){
