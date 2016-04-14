@@ -10,12 +10,14 @@ import javax.imageio.ImageIO;
 public class Explain{
   private Color grayBg = new Color(50,50,50);
   Story st;
+  ColorCombination cc;
   TextScrolling tx;
   Box mainFrame;
   JFrame frame = new JFrame("Learn about Artificial Neural Netwroks");
   int sceneCnt = 0;
   Explain(){
     st = new Story();
+    cc = new ColorCombination();
     tx = new TextScrolling();
   }
   public static void main(String[] args){
@@ -35,7 +37,7 @@ public class Explain{
     public void run() {
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       frame.getContentPane().setBackground(grayBg);
-      frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+      // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
       // frame.setSize(500,600);
       frame.setLocationByPlatform(true);
       // frame.add(st);

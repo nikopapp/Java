@@ -22,8 +22,9 @@ class GUI extends JPanel {
     // JFrame w = new JFrame()
     storyline.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     storyline.frame.setTitle("Introduction to Image Proccessing");
-    // mainFrame=navFrame();
-    storyline.frame.add(navFrame());
+    mainFrame=navFrame();
+    storyline.frame.add(mainFrame);
+    mainFrame.add(storyline.st);
     // storyline.frame.add()
     storyline.frame.pack();
     storyline.frame.setLocationByPlatform(false);
@@ -49,8 +50,9 @@ class GUI extends JPanel {
     box.setBackground(new Color(0xFDFADF));
     ButtonStyle bStyle = new ButtonStyle();
     JButton[] buttons =  new JButton[30];
-    buttons[0] =  new JButton("Scene 1");
-    buttons[1] =  new JButton("Scene 2");
+    for (int i=0;i<10;i++){
+      buttons[i] = new JButton("Scene " +i);
+    }
     buttonAddAction(buttons);
     box.setLayout(layout);
     for (JButton but:buttons){
@@ -66,21 +68,40 @@ class GUI extends JPanel {
   private void buttonAddAction(JButton[] buttons){
     buttons[0].addActionListener(this::gotoSlide1);
     buttons[1].addActionListener(this::gotoSlide2);
+    buttons[2].addActionListener(this::gotoSlide3);
+    buttons[3].addActionListener(this::gotoSlide2);
+    buttons[4].addActionListener(this::gotoSlide1);
+    buttons[5].addActionListener(this::gotoSlide2);
+    buttons[6].addActionListener(this::gotoSlide1);
+    buttons[7].addActionListener(this::gotoSlide2);
+    buttons[8].addActionListener(this::gotoSlide1);
+    buttons[9].addActionListener(this::gotoSlide2);
   }
   private void gotoSlide1(ActionEvent e){
     System.out.println("gotoSlide1");
     storyline.sceneCnt=0;
     storyline.st.reset();
     // mainFrame=navFrame(storyline.st
-    storyline.frame.add(storyline.st,1);
+    mainFrame.remove(1);
+    mainFrame.add(storyline.st,1);
     storyline.frame.revalidate();
+    storyline.frame.pack();
   }
   private void gotoSlide2(ActionEvent e){
     System.out.println("gotoSlide2");
     storyline.sceneCnt=1;
-    storyline.frame.remove(1);
-    storyline.frame.add(storyline.tx,1);
+    mainFrame.remove(1);
+    mainFrame.add(storyline.tx,1);
     storyline.frame.revalidate();
+    storyline.frame.pack();
+  }
+  private void gotoSlide3(ActionEvent e){
+    storyline.sceneCnt=2;
+    mainFrame.remove(1);
+    mainFrame.add(storyline.cc,1);
+    storyline.frame.revalidate();
+    storyline.frame.pack();
+    
   }
   class Animation implements ActionListener {
     public void actionPerformed(ActionEvent e) {

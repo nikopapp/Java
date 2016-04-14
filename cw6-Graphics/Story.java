@@ -12,26 +12,53 @@ class Story extends JPanel{
   private static final long serialVersionUID = 1L;
   public int windowHeight = 650;
   public int windowWidth  = 800;
-  private Polygon flashlight;
-  private Line2D line;
-  private int X1=20;
-  private int X2=20;
-  private int Y1= 0;
-  private int Y2= 0;
-  private int rectX1 = 50;
+  private PolygonExt flashlight;
+  private boolean lit = false;
+  private PolygonExt prism;
+  private static int prismCenterX;
+  private static int prismCenteY;
+  private int guideX = 40;
+  private int X1 = guideX;
+  private int X2 = guideX;
+  private int X3 = guideX;
+  private int X4 = guideX;
+  private int X5 = guideX;
+  private int X6 = guideX;
+  private int Y1 = 0;
+  private int Y2 = 0;
+  private int Y3 = 0;
+  private int Y4;
+  private int Y5;
+  private int Y6;
+  private int rectX1 = guideX;
+  private Point2D rotCenter;
   private Color grayBg = new Color(50,50,50);
+  private Color blue = new Color(120,150,150);
   private Color yellow = new Color(150,150,100);
+  private Color transparent = new Color(0,0,0,0);
+  private GradientPaint light = new GradientPaint(0,300,new Color(190,200,170,110),0,400, transparent);
+  private ArrayList<GradientPaint> prismLightStyleR = new ArrayList<GradientPaint>();
+  private ArrayList<GradientPaint> prismLightStyleL = new ArrayList<GradientPaint>();
   private RenderingHints rh=ToolKit.configRHints();
-  // private JPanel flshlght;
+  private Font fontText = new Font("Dialog",Font.PLAIN,18);
   Story(){
     super();
-    setBackground( grayBg );
+    setBackground( new Color(0,0,0) );
     setPreferredSize(new Dimension(windowWidth , windowHeight));
     addMouseListener(rotator);
     addMouseMotionListener(rotator);
-    line = new Line2D.Double(X1,Y1,X1,Y2);
-    flashlight = loadSvg("resources/vectors/flashlight.fx",windowWidth/2,200);
-    // flshlght = new JPanel(new BoxLayout(flshlght,BoxLayout.PAGE_AXIS));
+    // line = new Line2D.Double(X1,Y1,X1,Y2);
+    flashlight = SvgShapes.loadSvg("resources/vectors/flashlight.fx",windowWidth/2,200);
+    prism = SvgShapes.loadSvg("resources/vectors/prism.fx",windowWidth/2,400);
+    prismLightStyleR.add(new GradientPaint(windowWidth/2,200,new Color(160,40,0,100),windowWidth,400,transparent));
+    prismLightStyleR.add(new GradientPaint(windowWidth/2,200,new Color(40,160,0,100),windowWidth,400,transparent));
+    prismLightStyleR.add(new GradientPaint(windowWidth/2,200,new Color(0,160,40,100),windowWidth,400,transparent));
+    prismLightStyleR.add(new GradientPaint(windowWidth/2,200,new Color(0,40,160,100),windowWidth,400,transparent));
+    prismLightStyleL.add(new GradientPaint(windowWidth/2,200,new Color(160,40,0,100),0,400,transparent));
+    prismLightStyleL.add(new GradientPaint(windowWidth/2,200,new Color(40,160,0,100),0,400,transparent));
+    prismLightStyleL.add(new GradientPaint(windowWidth/2,200,new Color(0,160,40,100),0,400,transparent));
+    prismLightStyleL.add(new GradientPaint(windowWidth/2,200,new Color(0,40,160,100),0,400,transparent));
+
   }
   public static void main(String[] args){
     Story test = new Story();
@@ -43,6 +70,7 @@ class Story extends JPanel{
     f.setSize(400,400);
     f.setLocation(200,200);
     f.setVisible(true);
+    // prismCenterX = prism.getCenterX();
   }
   public void paintComponent(Graphics g0) {
     super.paintComponent(g0);
@@ -51,41 +79,72 @@ class Story extends JPanel{
     draw(g);
   }
   private void draw(Graphics2D g){
-    // add(flshlght);
+    g.setColor(yellow);
+    g.drawPolygon(flashlight);
+    drawCable(g);
+    if(lit==true) drawScene(g);
+    g.setColor(yellow);
+    g.setFont(fontText);
+    g.drawString("It all begins with light", 2*guideX,50);
+      // System.out.println("-degrees: " + flatMatrix[2]);
+  }
+  private void drawScene(Graphics2D g){
     g.setColor(new Color(5, 5,20,50));
     g.fillRect(0,0,400,300);
-    g.setColor(new Color(5, 5,20,50));
     g.fillRect(0,0,300,400);
-    //  g.rotate(60, 200, 150);
-    g.setColor(yellow);
-    drawSvgShapes(g,flashlight,300,300);
-    g.setColor(new Color(100,100,100));
-    g.drawLine(X1, Y1, X2, Y2);
+    g.fillRect(guideX,0,600,76);
+    g.setColor(new Color (100,100,100));
     g.fillRect(rectX1, 100, 300, 25);
+    g.setPaint(light);
+    g.fillRect(430,200,60,200);
     g.setColor(yellow);
-    drawText("resources/conv.txt",g);
-    g.drawString("Convolution is a method that is cool to understand",50,50);
-    g.draw(at.createTransformedShape(rect));
+    g.fill(at.createTransformedShape(prism));
+    g.drawString("Interact with me", 550,300);
+    g.drawLine(550,305,470,355);
+    g.drawLine(550,305,650,305);
+    double[] flatMatrix = new double[6];
+    at.getMatrix(flatMatrix);
+    System.out.println(flatMatrix[2]);
+    if((flatMatrix[2]>0.93&&flatMatrix[2]<1.0)||
+       (flatMatrix[2]>-0.96&&flatMatrix[2]<-0.86)){
+      g.drawString("Light can be separated into its different frequencies, thus different colors",60,600);
+      drawSpectrum(g,flatMatrix[2]);
+    }
   }
-  private void drawSvgShapes(Graphics2D g,Polygon shape,int x, int y){
-    // if(!shape.contains(x+1,y))
-    // shape.translate(x,y);
-    g.drawPolygon(shape);
+  private void drawSpectrum(Graphics2D g, double side){
+    int i = 1;
+    ArrayList<GradientPaint> list;
+    if(side >=0 ) list = prismLightStyleR;
+    else list = prismLightStyleL;
+    for(GradientPaint gpaint: list  ){
+      g.setPaint(gpaint);
+      g.fill(at.createTransformedShape(new Rectangle(425+i*10,379,20,400)));
+      i++;
+    }
   }
-  private void drawText(String filePath, Graphics g){
-    BufferedReader b;
-    String temp;
-    try{
-      b = new BufferedReader(new FileReader(filePath));
-      temp=b.readLine();
-      g.drawString(temp,150,150);
-    }catch(Exception e){}
+  private void drawCable(Graphics2D g){
+    g.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND,
+             BasicStroke.JOIN_ROUND));
+    g.setColor(blue);
+    g.drawLine(X1, Y1, X2, Y2);
+    g.drawLine(X2, Y2, X3, Y3);
+    g.drawLine(X3, Y3, X4, Y4);
+    g.drawLine(X4, Y4, X5, Y5);
+    if(Y6 != 0)
+    g.drawLine(X5, Y5, X6, Y6);
+    // System.out.println(""+X1+","+Y1+","+X2+","+Y2+","+X3+","+Y3+","+X4+","+Y4+","+X5+","+Y5);
   }
   public boolean lineGrowing(){
-    if(Y2<300)
-    Y2++;
-    else
-    return false;
+    if(Y2<300)      Y2++;
+    else if(X3<400){ X3++; Y3=Y2; Y5=Y4=Y3; X5=X4=X3;}
+    else if(Y4>60) { X4=X3;Y4--;X5=X3;}
+    else if(X5<458){ X6=++X5; Y6=Y5=Y4;}
+    else if(Y6<73) Y6++;
+    else {
+      lit = true;
+      setBackground(grayBg);
+      repaint();
+      return false;}
     repaint();
     return true;
   }
@@ -95,33 +154,6 @@ class Story extends JPanel{
     repaint();
     return true;
   }
-  private Polygon loadSvg(String filePath, int x , int y){
-    Polygon nGon = new Polygon();
-    BufferedReader b;
-    String temp;
-    ArrayList<Integer> dimensionsX = new ArrayList<Integer>();
-    ArrayList<Integer> dimensionsY = new ArrayList<Integer>();
-    try{
-      b = new BufferedReader(new FileReader(filePath));
-      while((temp = b.readLine()) != null){
-        temp=temp.trim();
-        getPoint("x:",temp,dimensionsX);
-        getPoint("y:",temp,dimensionsY);
-      }
-      for(int i=0; i<dimensionsY.size(); i++){
-        nGon.addPoint(2*Double.valueOf(dimensionsX.get(i)).intValue(),
-                      2*Double.valueOf(dimensionsY.get(i)).intValue());
-      }
-    }catch(Exception e){}
-    nGon.translate(x,y);
-    return nGon;
-  }
-  private void getPoint(String ident, String line, ArrayList<Integer> l){
-    if(line.startsWith(ident)){
-      line = line.replace(ident,"");
-      l.add(Double.valueOf(line).intValue());
-    }
-  }
   private MouseInputAdapter rotator  = new MouseInputAdapter() {
     Point2D.Double center = new Point2D.Double();
     double thetaStart = 0;
@@ -130,11 +162,14 @@ class Story extends JPanel{
 
       public void mousePressed(MouseEvent e) {
         Point p = e.getPoint();
-        Shape shape = at.createTransformedShape(rect);
+        Shape shape = at.createTransformedShape(prism);
+        Rectangle r = shape.getBounds();
+        // center.x = r.getCenterX();
+        // center.y = r.getCenterY();
+        center.x = prism.getCenterX();
+        center.y = prism.getCenterY();
+        System.out.println(center.x+" "+center.y);
         if(shape.contains(p)) {
-          Rectangle r = shape.getBounds();
-          center.x = r.getCenterX();
-          center.y = r.getCenterY();
           double dy = p.y - center.y;
           double dx = p.x - center.x;
           thetaStart = Math.atan2(dy, dx) - thetaEnd;
@@ -143,7 +178,6 @@ class Story extends JPanel{
           rotating = true;
         }
       }
-
       public void mouseReleased(MouseEvent e) {
         rotating = false;
         double dy = e.getY() - center.y;
@@ -169,6 +203,7 @@ class Story extends JPanel{
     }
     public void reset(){
       Y2=0;
+      lit=false;
     }
 
         // private static BufferedImage loadImage(String url){

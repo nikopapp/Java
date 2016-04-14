@@ -5,7 +5,7 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 class TextScrolling extends JPanel{
-  private static final long serialVersionUID = 2L;
+  private static final long serialVersionUID = 3L;
   private static final int lineSize = 30;
   private boolean running = false;
   public int windowHeight = 650;
@@ -17,7 +17,6 @@ class TextScrolling extends JPanel{
   private Color trans = new Color(0,0,0,0);
   private Color yelltext = new Color(150,150,100);
   private Font fontText = new Font("Dialog",Font.PLAIN,18);
-  private RenderingHints rh = ToolKit.configRHints();
   TextScrolling(){
     super();
     this.running=false;
@@ -27,7 +26,7 @@ class TextScrolling extends JPanel{
   public void paintComponent(Graphics g0) {
     super.paintComponent(g0);
     Graphics2D g = (Graphics2D) g0;
-    g.setRenderingHints(rh);
+    g.setRenderingHints(ToolKit.configRHints());
     drawText("resources/conv.txt",g);
     gray2trans = new GradientPaint(0,windowHeight,new Color(50,50,50,255),0, windowHeight-100,new Color(50,50,50,0));
     g.setPaint(gray2trans);
