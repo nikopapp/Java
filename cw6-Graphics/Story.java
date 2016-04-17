@@ -30,13 +30,14 @@ class Story extends JPanel{
   private int Y4;
   private int Y5;
   private int Y6;
+  private int flashlightY=74;
   private int rectX1 = guideX;
   private Point2D rotCenter;
   private Color grayBg = new Color(50,50,50);
   private Color blue = new Color(120,150,150);
   private Color yellow = new Color(150,150,100);
   private Color transparent = new Color(0,0,0,0);
-  private GradientPaint light = new GradientPaint(0,300,new Color(190,200,170,110),0,400, transparent);
+  private GradientPaint light = new GradientPaint(0,200,new Color(190,200,170,110),0,400, transparent);
   private ArrayList<GradientPaint> prismLightStyleR = new ArrayList<GradientPaint>();
   private ArrayList<GradientPaint> prismLightStyleL = new ArrayList<GradientPaint>();
   private RenderingHints rh=ToolKit.configRHints();
@@ -92,11 +93,10 @@ class Story extends JPanel{
     g.setColor(new Color(5, 5,20,50));
     g.fillRect(0,0,400,300);
     g.fillRect(0,0,300,400);
-    g.fillRect(guideX,0,600,76);
+    g.fillRect(guideX,0,600,flashlightY);
     g.setColor(new Color (100,100,100));
     g.fillRect(rectX1, 100, 300, 25);
-    g.setPaint(light);
-    g.fillRect(430,200,60,200);
+    drawLight(g);
     g.setColor(yellow);
     g.fill(at.createTransformedShape(prism));
     g.drawString("Interact with me", 550,300);
@@ -104,12 +104,21 @@ class Story extends JPanel{
     g.drawLine(550,305,650,305);
     double[] flatMatrix = new double[6];
     at.getMatrix(flatMatrix);
-    System.out.println(flatMatrix[2]);
     if((flatMatrix[2]>0.93&&flatMatrix[2]<1.0)||
-       (flatMatrix[2]>-0.96&&flatMatrix[2]<-0.86)){
+       (flatMatrix[2]>-0.98&&flatMatrix[2]<-0.86)){
       g.drawString("Light can be separated into its different frequencies, thus different colors",60,600);
       drawSpectrum(g,flatMatrix[2]);
     }
+  }
+  private void drawLight(Graphics2D g){
+    ArrayList<Point> list = new ArrayList<Point>();
+    list.add(new Point(430,200));
+    list.add(new Point(490,200));
+    list.add(new Point(510,600));
+    list.add(new Point(410,600));
+    g.setPaint(light);
+    g.fillPolygon(new PolygonExt(list));
+    // g.fillRect(430,200,60,200);
   }
   private void drawSpectrum(Graphics2D g, double side){
     int i = 1;
@@ -118,7 +127,7 @@ class Story extends JPanel{
     else list = prismLightStyleL;
     for(GradientPaint gpaint: list  ){
       g.setPaint(gpaint);
-      g.fill(at.createTransformedShape(new Rectangle(425+i*10,379,20,400)));
+      g.fill(at.createTransformedShape(new Rectangle(425+i*10,379,20,500)));
       i++;
     }
   }
@@ -135,11 +144,11 @@ class Story extends JPanel{
     // System.out.println(""+X1+","+Y1+","+X2+","+Y2+","+X3+","+Y3+","+X4+","+Y4+","+X5+","+Y5);
   }
   public boolean lineGrowing(){
-    if(Y2<300)      Y2++;
-    else if(X3<400){ X3++; Y3=Y2; Y5=Y4=Y3; X5=X4=X3;}
-    else if(Y4>60) { X4=X3;Y4--;X5=X3;}
-    else if(X5<458){ X6=++X5; Y6=Y5=Y4;}
-    else if(Y6<73) Y6++;
+    if(Y2<300)      Y2+=3;
+    else if(X3<400){ X3+=3; Y3=Y2; Y5=Y4=Y3; X5=X4=X3;}
+    else if(Y4>50) { X4=X3;Y4-=3;X5=X3;}
+    else if(X5<458){ X6=X5+=3; Y6=Y5=Y4;}
+    else if(Y6<flashlightY) Y6+=3;
     else {
       lit = true;
       setBackground(grayBg);

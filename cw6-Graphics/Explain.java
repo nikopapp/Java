@@ -21,8 +21,8 @@ public class Explain{
     tx = new TextScrolling();
   }
   public static void main(String[] args){
-    // Explain program = new Explain();
-    // SwingUtilities.invokeLater(program.new Scene());
+    Explain program = new Explain();
+    SwingUtilities.invokeLater(program.new Scene());
     // ------------------------------------
     // frame.getContentPane().add(st);
     // // BufferedImage img = loadImage("resources/slime.png");
@@ -40,11 +40,8 @@ public class Explain{
       // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
       // frame.setSize(500,600);
       frame.setLocationByPlatform(true);
-      // frame.add(st);
-      // mainFrame=navFrame(st);
       frame.add(mainFrame);
       frame.pack();
-      // frame.setUndecorated(true);
       frame.setVisible(true);
       Timer t = new Timer(25, new Animation());
       // t.setInitialDelay(2000);
