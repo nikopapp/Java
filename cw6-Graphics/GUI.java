@@ -11,7 +11,7 @@ class GUI extends JPanel {
   private Timer t = new Timer(25, new Animation());
   private Box mainFrame;
   GUI(){
-    setPreferredSize(new Dimension(400,300));
+    setPreferredSize(new Dimension(storyline.st.windowWidth,storyline.st.windowHeight));
   }
   public static void main(String args[]){
     GUI gui = new GUI();
@@ -69,19 +69,18 @@ class GUI extends JPanel {
     buttons[0].addActionListener(this::gotoSlide1);
     buttons[1].addActionListener(this::gotoSlide2);
     buttons[2].addActionListener(this::gotoSlide3);
-    buttons[3].addActionListener(this::gotoSlide2);
-    buttons[4].addActionListener(this::gotoSlide1);
-    buttons[5].addActionListener(this::gotoSlide2);
+    buttons[3].addActionListener(this::gotoSlide1);
+    buttons[4].addActionListener(this::gotoSlide2);
+    buttons[5].addActionListener(this::gotoSlide3);
     buttons[6].addActionListener(this::gotoSlide1);
     buttons[7].addActionListener(this::gotoSlide2);
-    buttons[8].addActionListener(this::gotoSlide1);
-    buttons[9].addActionListener(this::gotoSlide2);
+    buttons[8].addActionListener(this::gotoSlide3);
+    buttons[9].addActionListener(this::gotoSlide1);
   }
   private void gotoSlide1(ActionEvent e){
     System.out.println("gotoSlide1");
     storyline.sceneCnt=0;
-    storyline.st.reset();
-    // mainFrame=navFrame(storyline.st
+    // storyline.st.reset();
     mainFrame.remove(1);
     mainFrame.add(storyline.st,1);
     storyline.frame.revalidate();
@@ -92,16 +91,18 @@ class GUI extends JPanel {
     storyline.sceneCnt=1;
     mainFrame.remove(1);
     mainFrame.add(storyline.tx,1);
+    storyline.tx.start();
     storyline.frame.revalidate();
     storyline.frame.pack();
   }
   private void gotoSlide3(ActionEvent e){
+    System.out.println("gotoSlide3");
     storyline.sceneCnt=2;
     mainFrame.remove(1);
     mainFrame.add(storyline.cc,1);
     storyline.frame.revalidate();
     storyline.frame.pack();
-    
+
   }
   class Animation implements ActionListener {
     public void actionPerformed(ActionEvent e) {
@@ -116,17 +117,6 @@ class GUI extends JPanel {
           break;
       }
     }
-    // private void slide1(){
-    //   if(st.lineGrowing()==false) sceneCnt++;
-    // }
-    // private void slide2(){
-    //   if(!tx.isRunning()){
-    //     tx.setRunning();
-    //     changeScene();
-    //     tx.repaint();
-    //   }
-    //   else tx.scroll();
-    // }
     private void changeScene(){
       storyline.mainFrame.remove(storyline.st);
       storyline.mainFrame.add(storyline.tx);

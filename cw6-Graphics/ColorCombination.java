@@ -11,11 +11,17 @@ public class ColorCombination extends JPanel{
   private Color grayBg = new Color(50,50,50);
 
   public ColorCombination(){
-    JSlider rSli = new JSlider(JSlider.VERTICAL, 0, 255,0);
-    JSlider gSli = new JSlider(JSlider.VERTICAL, 0, 255,0);
-    JSlider bSli = new JSlider(JSlider.VERTICAL, 0, 255,0);
+    SliderStyle rSli = new SliderStyle(JSlider.VERTICAL, 0, 255,0);
+    SliderStyle gSli = new SliderStyle(JSlider.VERTICAL, 0, 255,0);
+    SliderStyle bSli = new SliderStyle(JSlider.VERTICAL, 0, 255,0);
+    rSli.setPaintLabels(true);
     setBackground( grayBg );
     setPreferredSize(new Dimension(windowWidth , windowHeight));
+    // SliderStyle sstyle = new SliderStyle(rSli);
+    // rSli.setUI(sstyle);
+    add(rSli);
+    add(gSli);
+    add(bSli);
   }
   public static void main(String[] args){
     ColorCombination cc=  new ColorCombination();

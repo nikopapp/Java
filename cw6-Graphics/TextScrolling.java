@@ -4,23 +4,17 @@ import java.awt.geom.*;
 import java.util.*;
 import java.io.*;
 import java.net.*;
-class TextScrolling extends JPanel{
+class TextScrolling extends Slide{
   private static final long serialVersionUID = 3L;
   private static final int lineSize = 30;
   private boolean running = false;
-  public int windowHeight = 650;
-  public int windowWidth  = 800;
-  private int textX0 = 40;
   private double textY0 = windowHeight;
   private GradientPaint gray2trans;
-  private Color grayBg = new Color(50,50,50);
-  private Color trans = new Color(0,0,0,0);
-  private Color yelltext = new Color(150,150,100);
   private Font fontText = new Font("Dialog",Font.PLAIN,18);
   TextScrolling(){
     super();
     this.running=false;
-    setBackground( grayBg );
+    setBackground( getColor("grayBg") );
     setPreferredSize(new Dimension(windowWidth , windowHeight));
   }
   public void paintComponent(Graphics g0) {
@@ -28,7 +22,7 @@ class TextScrolling extends JPanel{
     Graphics2D g = (Graphics2D) g0;
     g.setRenderingHints(ToolKit.configRHints());
     drawText("resources/conv.txt",g);
-    gray2trans = new GradientPaint(0,windowHeight,new Color(50,50,50,255),0, windowHeight-100,new Color(50,50,50,0));
+    gray2trans = new GradientPaint(0,windowHeight,getColor("grayBg"),0, windowHeight-100,new Color(50,50,50,0));
     g.setPaint(gray2trans);
     g.fillRect(0,300,windowWidth,windowHeight-300);
   }
@@ -37,13 +31,13 @@ class TextScrolling extends JPanel{
       BufferedReader b;
       String temp;
       int i=0;
-      g.setColor(yelltext);
+      g.setColor(getColor("yellow"));
       g.setFont(fontText);
       try{
         b = new BufferedReader(new FileReader(filePath));
         while((temp = b.readLine()) != null){
           i++;
-          g.drawString(temp,textX0,(int)textY0+lineSize*i);
+          g.drawString(temp,guideX,(int)textY0+lineSize*i);
         }
 
       }catch(Exception e){}
@@ -58,8 +52,8 @@ class TextScrolling extends JPanel{
     return running ? true : false;
   }
   public void scroll(){
-    if(textY0>=40){
-      textY0-=.3;
+    if(textY0>=40 && running){
+      textY0-=.6;
       repaint();
     }
   }
