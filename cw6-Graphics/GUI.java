@@ -6,29 +6,26 @@ import java.net.*;
 import java.awt.event.*;
 
 class GUI extends JPanel {
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 100L;
   private static Explain storyline = new Explain();
   private Timer t = new Timer(25, new Animation());
   private Box mainFrame;
   GUI(){
-    setPreferredSize(new Dimension(storyline.st.windowWidth,storyline.st.windowHeight));
+
   }
   public static void main(String args[]){
     GUI gui = new GUI();
     SwingUtilities.invokeLater(gui::run);
-    // SwingUtilities.invokeLater(storyline::run);
   }
   private void run(){
-    // JFrame w = new JFrame()
-    storyline.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    storyline.frame.setTitle("Introduction to Image Proccessing");
     mainFrame=navFrame();
-    storyline.frame.add(mainFrame);
-    mainFrame.add(storyline.st);
-    // storyline.frame.add()
-    storyline.frame.pack();
-    storyline.frame.setLocationByPlatform(false);
-    storyline.frame.setVisible(true);
+    storyline.add(mainFrame);
+    mainFrame.add(storyline.storyline.get(0));
+    mainFrame.setBackground(Color.black);
+    // storyline.add()
+    storyline.pack();
+    storyline.setLocationByPlatform(false);
+    storyline.setVisible(true);
     t.start();
   }
   private Box navFrame(){
@@ -41,13 +38,13 @@ class GUI extends JPanel {
     box.add(navButtons());
     // box.add(something);
     box.setBorder(border);
+    box.setBackground(new Color(0x111111));
     return box;
   }
 
   private JPanel navButtons(){
     JPanel box = new JPanel();
     BoxLayout layout = new BoxLayout(box,BoxLayout.PAGE_AXIS);
-    box.setBackground(new Color(0xFDFADF));
     ButtonStyle bStyle = new ButtonStyle();
     JButton[] buttons =  new JButton[30];
     for (int i=0;i<10;i++){
@@ -69,8 +66,8 @@ class GUI extends JPanel {
     buttons[0].addActionListener(this::gotoSlide1);
     buttons[1].addActionListener(this::gotoSlide2);
     buttons[2].addActionListener(this::gotoSlide3);
-    buttons[3].addActionListener(this::gotoSlide1);
-    buttons[4].addActionListener(this::gotoSlide2);
+    buttons[3].addActionListener(this::gotoSlide4);
+    buttons[4].addActionListener(this::gotoSlide1);
     buttons[5].addActionListener(this::gotoSlide3);
     buttons[6].addActionListener(this::gotoSlide1);
     buttons[7].addActionListener(this::gotoSlide2);
@@ -80,48 +77,59 @@ class GUI extends JPanel {
   private void gotoSlide1(ActionEvent e){
     System.out.println("gotoSlide1");
     storyline.sceneCnt=0;
+    changeScene();
     // storyline.st.reset();
-    mainFrame.remove(1);
-    mainFrame.add(storyline.st,1);
-    storyline.frame.revalidate();
-    storyline.frame.pack();
   }
   private void gotoSlide2(ActionEvent e){
     System.out.println("gotoSlide2");
     storyline.sceneCnt=1;
-    mainFrame.remove(1);
-    mainFrame.add(storyline.tx,1);
-    storyline.tx.start();
-    storyline.frame.revalidate();
-    storyline.frame.pack();
+    changeScene();
+    // mainFrame.remove(1);
+    // mainFrame.add(storyline.storyline.get(1),1);
+    // storyline.revalidate();
+    // storyline.pack();
   }
   private void gotoSlide3(ActionEvent e){
     System.out.println("gotoSlide3");
     storyline.sceneCnt=2;
+    changeScene();
+    // mainFrame.remove(1);
+    // mainFrame.add(storyline.storyline.get(2),1);
+    // storyline.revalidate();
+    // storyline.pack();
+  }
+  private void gotoSlide4(ActionEvent e){
+    System.out.println("gotoSlide4");
+    storyline.sceneCnt=3;
+    changeScene();
+    // mainFrame.remove(1);
+    // mainFrame.add(storyline.storyline.get(3),1);
+    // storyline.storyline.get(3).start();
+    // storyline.revalidate();
+    // storyline.pack();
+  }
+  private void changeScene(){
+    System.out.println();
     mainFrame.remove(1);
-    mainFrame.add(storyline.cc,1);
-    storyline.frame.revalidate();
-    storyline.frame.pack();
-
+    mainFrame.add(storyline.storyline.get(storyline.sceneCnt),1);
+    storyline.revalidate();
+    storyline.pack();
+    storyline.repaint();
   }
   class Animation implements ActionListener {
     public void actionPerformed(ActionEvent e) {
       switch (storyline.sceneCnt){
         case 0:
-          storyline.slide1();
+          for(int i=0;i<6;i++)
+            storyline.slide1();
           break;
         case 1:
-          storyline.slide2();
-          break;
         case 2:
           break;
+        case 3:
+            storyline.slide4();
+          break;
       }
-    }
-    private void changeScene(){
-      storyline.mainFrame.remove(storyline.st);
-      storyline.mainFrame.add(storyline.tx);
-      storyline.frame.add(storyline.mainFrame);
-      storyline.frame.pack();
     }
   }
 }

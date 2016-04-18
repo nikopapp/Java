@@ -19,8 +19,9 @@ public class Explain2{
   }
   public static void main(String[] args){
     Explain program = new Explain();
-    SwingUtilities.invokeLater(program.new Scene1());
-    SwingUtilities.invokeLater(program.new Scene2());
+    // SwingUtilities.invokeLater(program.new Scene1());
+    // SwingUtilities.invokeLater(program.new Scene2());
+    // ----------------------------
     // frame.getContentPane().add(st);
     // // BufferedImage img = loadImage("resources/slime.png");
     // // frame.getContentPane().setLayout(new FlowLayout());
@@ -64,7 +65,7 @@ public class Explain2{
       public void actionPerformed(ActionEvent e) {
         if(!tx.isRunning()) {
           changeScene();
-          tx.setRunning();
+          tx.start();
         }
         else tx.scroll();
       }

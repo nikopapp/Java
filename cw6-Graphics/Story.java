@@ -6,15 +6,18 @@ import java.awt.geom.*;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 
+// write a tick method on slide then override it in every scene
+
 class Story extends Slide{
   private Rectangle2D.Double rect = new Rectangle2D.Double(100,75,200,160);
   private AffineTransform at = new AffineTransform();
   private static final long serialVersionUID = 1L;
   private PolygonExt flashlight;
+  private int flashlightCentX;
   private boolean lit = false;
   private PolygonExt prism;
-  private static int prismCenterX;
-  private static int prismCenteY;
+  // private static int prismCenterX;
+  // private static int prismCenteY;
   private int guideX = 40;
   private int X1 = guideX;
   private int X2 = guideX;
@@ -37,10 +40,8 @@ class Story extends Slide{
   Story(){
     super();
     setBackground( Color.black );
-    setPreferredSize(new Dimension(windowWidth , windowHeight));
     addMouseListener(rotator);
     addMouseMotionListener(rotator);
-    // line = new Line2D.Double(X1,Y1,X1,Y2);
     flashlight = SvgShapes.loadSvg("resources/vectors/flashlight.fx",windowWidth/2+95,200);
     prism = SvgShapes.loadSvg("resources/vectors/prism.fx",windowWidth/2+95,400);
     prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(160,40,0,100),windowWidth,600,getColor("transparent")));
@@ -51,18 +52,14 @@ class Story extends Slide{
     prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(40,160,0,100),0,600,getColor("transparent")));
     prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(0,160,40,100),0,600,getColor("transparent")));
     prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(0,40,160,100),0,600,getColor("transparent")));
-
   }
   public static void main(String[] args){
     Story test = new Story();
-    test.addMouseListener(test.rotator);
-    test.addMouseMotionListener(test.rotator);
     JFrame f = new JFrame();
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.getContentPane().add(test);
-    f.setSize(400,400);
-    f.setLocation(200,200);
     f.setVisible(true);
+    f.pack();
     // prismCenterX = prism.getCenterX();
   }
   public void paintComponent(Graphics g0) {
@@ -74,10 +71,10 @@ class Story extends Slide{
   private void draw(Graphics2D g){
     g.setColor(getColor("yellow"));
     g.drawPolygon(flashlight);
-    if(lit==true) drawScene(g);
+    if(lit) drawScene(g);
     drawCable(g);
     drawPunchLines(g);
-    if(lit==false) drawPunchCover(g);
+    if(!lit) drawPunchCovers(g);
       // System.out.println("-degrees: " + flatMatrix[2]);
   }
   private void drawScene(Graphics2D g){
@@ -95,7 +92,7 @@ class Story extends Slide{
     g.drawLine(630,255,780,255);
     double[] flatMatrix = new double[6];
     at.getMatrix(flatMatrix);
-    System.out.print("\r" +flatMatrix[2]+" "+ flatMatrix[1]);
+    // System.out.print("\r" +flatMatrix[2]+" "+ flatMatrix[1]);
     if((flatMatrix[2]>0.93&&flatMatrix[2]<1.0)||
        (flatMatrix[2]>-0.98&&flatMatrix[2]<-0.86)){
       g.drawString("Light can be separated into its different frequencies, thus different colors",60,600);
@@ -105,13 +102,15 @@ class Story extends Slide{
   private void drawPunchLines(Graphics2D g){
     g.setColor(getColor("yellow"));
     g.setFont(getFont());
-    g.drawString("It all begins with light", 2*guideX,50);
-    String s = "Which is transformed into Light";
+    g.drawString("It all begins with electricity", 2*guideX,50);
+    String s = "Which is transformed into ";
+    if(lit) s = s+"Light";
     g.setColor(getColor("yellow"));
     g.drawString(s,3*guideX,250);
   }
-  private void drawPunchCover(Graphics2D g){
+  private void drawPunchCovers(Graphics2D g){
     g.setColor(Color.black);
+    g.fillRect(guideX+2,Y2+2,400,100);
     g.fillRect(X3+2,230,400,30);
   }
   private void drawLight(Graphics2D g){
@@ -130,9 +129,9 @@ class Story extends Slide{
     ArrayList<GradientPaint> list;
     if(side >=0 ) list = prismLightStyleR;
     else list = prismLightStyleL;
-    for(GradientPaint gpaint: list  ){
+    for(GradientPaint gpaint : list){
       g.setPaint(gpaint);
-      g.fill(at.createTransformedShape(new Rectangle(540+i*10,379,20,500)));
+      g.fill(at.createTransformedShape(new Rectangle(540+i*10,379,20,700)));
       i++;
     }
   }
@@ -148,12 +147,13 @@ class Story extends Slide{
     g.drawLine(X5, Y5, X6, Y6);
     // System.out.println(""+X1+","+Y1+","+X2+","+Y2+","+X3+","+Y3+","+X4+","+Y4+","+X5+","+Y5);
   }
-  public boolean lineGrowing(){
-    if(Y2<300)      Y2+=3;
-    else if(X3<450){ X3+=3; Y3=Y2; Y5=Y4=Y3; X5=X4=X3;}
-    else if(Y4>40) { X4=X3;Y4-=3;X5=X3;}
-    else if(X5<(windowWidth/2+150)){ X6=X5+=3; Y6=Y5=Y4;}
-    else if(Y6<flashlightY) Y6+=3;
+  @Override
+  public boolean tick(){
+    if(Y2<300)      Y2++;
+    else if(X3<450){X3++; Y3=Y2; Y5=Y4=Y3; X5=X4=X3;}
+    else if(Y4>40) {X4=X3;Y4--;X5=X3;}
+    else if(X5<(prism.getCenterX())){X6=X5++; Y6=Y5=Y4;}
+    else if(Y6<flashlightY) Y6++;
     else {
       lit = true;
       setBackground(getColor("grayBg"));
@@ -223,6 +223,4 @@ class Story extends Slide{
         //   } catch (IOException e) {}
         //   return img;
         // }
-
-
 }

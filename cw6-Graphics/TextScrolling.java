@@ -14,8 +14,6 @@ class TextScrolling extends Slide{
   TextScrolling(){
     super();
     this.running=false;
-    setBackground( getColor("grayBg") );
-    setPreferredSize(new Dimension(windowWidth , windowHeight));
   }
   public void paintComponent(Graphics g0) {
     super.paintComponent(g0);
@@ -51,11 +49,13 @@ class TextScrolling extends Slide{
   public boolean isRunning(){
     return running ? true : false;
   }
-  public void scroll(){
+  @Override
+  public boolean tick(){
     if(textY0>=40 && running){
       textY0-=.6;
       repaint();
-    }
+      return true;
+    }else return false;
   }
   private static void open(URI uri) {
    if (Desktop.isDesktopSupported()) {

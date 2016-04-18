@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.awt.event.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -7,18 +8,33 @@ import java.io.*;
 import javax.imageio.ImageIO;
 
 
-public class Explain{
+public class Explain extends JFrame {
   private Color grayBg = new Color(50,50,50);
-  Story st;
-  ColorCombination cc;
-  TextScrolling tx;
+  ArrayList<Slide> storyline = new ArrayList<Slide>();
+  // Story st = new Story();
+  // ColorCombination cc;
+  // ChannelCombination chc;
+  // TextScrolling tx;
   Box mainFrame;
-  JFrame frame = new JFrame("Learn about Artificial Neural Netwroks");
+  // JFrame frame = new JFrame("Learn about Artificial Neural Netwroks");
   int sceneCnt = 0;
   Explain(){
-    st = new Story();
-    cc = new ColorCombination();
-    tx = new TextScrolling();
+    storyline.add(new Story());
+    storyline.add(new ColorCombination());
+    storyline.add(new ChannelCombination());
+    storyline.add(new TextScrolling());
+    // st  = new Story();
+    // cc  = new ColorCombination();
+    // chc = new ChannelCombination();
+    // tx  = new TextScrolling();
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    setTitle("Introduction to Image Proccessing");
+    addComponentListener(new resizeListener());
+  }
+  class resizeListener extends ComponentAdapter {
+    public void componentResized(ComponentEvent e) {
+      adaptSlides(getSize());
+    }
   }
   public static void main(String[] args){
     Explain program = new Explain();
@@ -33,23 +49,17 @@ public class Explain{
     // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
   class Scene implements Runnable {
-    private boolean slide1=false;
     public void run() {
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-      frame.getContentPane().setBackground(grayBg);
-      // frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-      // frame.setSize(500,600);
-      frame.setLocationByPlatform(true);
-      frame.add(mainFrame);
-      frame.pack();
-      frame.setVisible(true);
+      getContentPane().setBackground(grayBg);
+      add(mainFrame);
+      pack();
+      setVisible(true);
       Timer t = new Timer(25, new Animation());
-      // t.setInitialDelay(2000);
+      t.setInitialDelay(1000);
       t.start();
-      tx.setWindowSize(frame.getBounds());
-      st.setWindowSize(frame.getBounds());
+      // tx.setWindowSize(getBounds());
+      // st.setWindowSize(getBounds());
     }
-
     class Animation implements ActionListener {
       public void actionPerformed(ActionEvent e) {
         switch (sceneCnt){
@@ -57,25 +67,26 @@ public class Explain{
             slide1();
             break;
           case 1:
-            slide2();
             break;
-          case 2:
-
+          case 4:
+          slide4();
             break;
         }
       }
     }
     }
     public void slide1(){
-      if(st.lineGrowing()==false) sceneCnt++;
+      if(storyline.get(0).tick()==false) sceneCnt++;
     }
-    public void slide2(){
-      tx.scroll();
+    public void slide4(){
+      storyline.get(3).start();
+      storyline.get(3).tick();
     }
-    public void changeScene(){
-      mainFrame.remove(st);
-      mainFrame.add(tx);
-      frame.pack();
+  private void adaptSlides(Dimension d){
+    for(Slide s:storyline){
+      s.windowHeight = d.height;
+      s.windowWidth =  d.width;
+    }
   }
 }
   //------------------------------------------------------
