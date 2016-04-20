@@ -14,7 +14,6 @@ import javax.sound.sampled.*;
 class Story extends Slide{
   AudioFormat PLAYBACK_FORMAT = new AudioFormat(44100,16, 1, true, false);
   Sound bzz,reveal;
-  boolean soundRevealPlayed = false;
   SoundManager soundManager;
 
   private AffineTransform at = new AffineTransform();
@@ -23,6 +22,8 @@ class Story extends Slide{
   private int flashlightCentX;
   private boolean lit = false;
   private PolygonExt prism;
+  private boolean solved = false;
+  private boolean firstTime = true;
   // private static int prismCenterX;
   // private static int prismCenteY;
   private int guideX = 40;
@@ -82,6 +83,8 @@ class Story extends Slide{
     if(lit) drawScene(g);
     drawCable(g);
     drawPunchLines(g);
+    if(solved)
+      g.drawString("Light can be separated into its different frequencies, thus different colors",60,600);
     if(!lit) drawPunchCovers(g);
   }
   private void drawScene(Graphics2D g){
@@ -99,17 +102,11 @@ class Story extends Slide{
     g.drawLine(630,255,780,255);
     double[] flatMatrix = new double[6];
     at.getMatrix(flatMatrix);
-    if((flatMatrix[2]>0.93&&flatMatrix[2]<1.0)||
-       (flatMatrix[2]>-1.0&&flatMatrix[2]<-0.93)){
-      // soundRevealPlayed=false;
-      playSoundReveal();
-      g.drawString("Light can be separated into its different frequencies, thus different colors",60,600);
-      drawSpectrum(g,flatMatrix[2]);
-    }
+    drawSpectrum(g,flatMatrix[2]);
   }
   private void playSoundReveal(){
-    if (!soundRevealPlayed) soundManager.play(reveal);
-    soundRevealPlayed = true;
+    firstTime = false;
+    soundManager.play(reveal);
   }
   private void drawPunchLines(Graphics2D g){
     g.setColor(getColor("yellow"));
@@ -137,15 +134,22 @@ class Story extends Slide{
     g.fillPolygon(pol);
   }
   private void drawSpectrum(Graphics2D g, double side){
-    int i = 1;
-    ArrayList<GradientPaint> list;
-    if(side >=0 ) list = prismLightStyleR;
-    else list = prismLightStyleL;
-    for(GradientPaint gpaint : list){
-      g.setPaint(gpaint);
-      g.fill(at.createTransformedShape(new Rectangle(540+i*10,379,20,700)));
-      i++;
+    if((side>0.93&&side<1.0)||
+    (side>-1.0&&side<-0.93)){
+      if(!solved && firstTime) playSoundReveal();
+      int i = 1;
+      ArrayList<GradientPaint> list;
+      if(side >=0 ) list = prismLightStyleR;
+      else list = prismLightStyleL;
+      for(GradientPaint gpaint : list){
+        g.setPaint(gpaint);
+        g.fill(at.createTransformedShape(new Rectangle(540+i*10,379,20,700)));
+        i++;
     }
+  } else{
+    firstTime = true;
+    solved = false;
+  }
   }
   private void drawCable(Graphics2D g){
     g.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND,
