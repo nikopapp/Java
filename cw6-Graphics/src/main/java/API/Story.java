@@ -5,9 +5,11 @@ import java.io.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.geom.*;
+import java.net.*;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import javax.sound.sampled.*;
+
 
 // write a tick method on slide then override it in every scene
 
@@ -45,21 +47,18 @@ class Story extends Slide{
   private GradientPaint light = new GradientPaint(0,200,new Color(190,200,170,110),0,400, getColor("transparent"));
   private ArrayList<GradientPaint> prismLightStyleR = new ArrayList<GradientPaint>();
   private ArrayList<GradientPaint> prismLightStyleL = new ArrayList<GradientPaint>();
+  private SvgShapes svg = new SvgShapes();
   Story(){
     super();
     setBackground( Color.black );
     addMouseListener(rotator);
     addMouseMotionListener(rotator);
-    flashlight = SvgShapes.loadSvg("resources/vectors/flashlight.fx",windowWidth/2+95,200);
-    prism = SvgShapes.loadSvg("resources/vectors/prism.fx",windowWidth/2+95,400);
-    prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(160,40,0,100),windowWidth,600,getColor("transparent")));
-    prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(40,160,0,100),windowWidth,600,getColor("transparent")));
-    prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(0,160,40,100),windowWidth,600,getColor("transparent")));
-    prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(0,40,160,100),windowWidth,600,getColor("transparent")));
-    prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(160,40,0,100),0,600,getColor("transparent")));
-    prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(40,160,0,100),0,600,getColor("transparent")));
-    prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(0,160,40,100),0,600,getColor("transparent")));
-    prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(0,40,160,100),0,600,getColor("transparent")));
+    // URL resourceFlashlight = getClass().getClassLoader().getResource("resources/vectors/flashlight.fx");
+    // URL resourcePrism = getClass().getClassLoader().getResource("resources/vectors/prism.fx");
+
+    flashlight = svg.loadSvg("resources/vectors/flashlight.fx",windowWidth/2+95,200);
+    prism = svg.loadSvg("resources/vectors/prism.fx",windowWidth/2+95,400);
+    createDynamicGradientPaints();
     initSounds();
   }
   public static void main(String[] args){
@@ -83,8 +82,6 @@ class Story extends Slide{
     if(lit) drawScene(g);
     drawCable(g);
     drawPunchLines(g);
-    if(solved)
-      g.drawString("Light can be separated into its different frequencies, thus different colors",60,600);
     if(!lit) drawPunchCovers(g);
   }
   private void drawScene(Graphics2D g){
@@ -104,6 +101,16 @@ class Story extends Slide{
     at.getMatrix(flatMatrix);
     drawSpectrum(g,flatMatrix[2]);
   }
+  private void createDynamicGradientPaints(){
+    prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(160,40,0,100),windowWidth,600,getColor("transparent")));
+    prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(40,160,0,100),windowWidth,600,getColor("transparent")));
+    prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(0,160,40,100),windowWidth,600,getColor("transparent")));
+    prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(0,40,160,100),windowWidth,600,getColor("transparent")));
+    prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(160,40,0,100),0,600,getColor("transparent")));
+    prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(40,160,0,100),0,600,getColor("transparent")));
+    prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(0,160,40,100),0,600,getColor("transparent")));
+    prismLightStyleL.add(new GradientPaint(windowWidth/2+115,300,new Color(0,40,160,100),0,600,getColor("transparent")));
+  }
   private void playSoundReveal(){
     firstTime = false;
     soundManager.play(reveal);
@@ -114,7 +121,6 @@ class Story extends Slide{
     g.drawString("It all begins with electricity", 2*guideX,50);
     String s = "Which is transformed into ";
     if(lit) s = s+"Light";
-    g.setColor(getColor("yellow"));
     g.drawString(s,3*guideX,250);
   }
   private void drawPunchCovers(Graphics2D g){
@@ -141,6 +147,7 @@ class Story extends Slide{
       ArrayList<GradientPaint> list;
       if(side >=0 ) list = prismLightStyleR;
       else list = prismLightStyleL;
+      g.drawString("Light can be separated into its different frequencies, thus different colors",60,600);
       for(GradientPaint gpaint : list){
         g.setPaint(gpaint);
         g.fill(at.createTransformedShape(new Rectangle(540+i*10,379,20,700)));
@@ -230,7 +237,7 @@ class Story extends Slide{
     };
     private void initSounds() {
       soundManager = new SoundManager(PLAYBACK_FORMAT);
-      bzz = soundManager.getSound("resources/shortZap.wav");
+      bzz = soundManager.getSound("resources/shorterZap.wav");
       reveal = soundManager.getSound("resources/reveal.wav");
 
     }

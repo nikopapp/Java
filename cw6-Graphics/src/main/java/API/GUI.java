@@ -24,7 +24,6 @@ class GUI extends JPanel {
     storyline.add(mainFrame);
     mainFrame.add(storyline.storyline.get(0));
     mainFrame.setBackground(Color.black);
-    // storyline.add()
     storyline.pack();
     storyline.setLocationByPlatform(false);
     storyline.setVisible(true);
@@ -91,7 +90,6 @@ class GUI extends JPanel {
     changeScene();
   }
   private void changeScene(){
-    System.out.println();
     mainFrame.remove(1);
     mainFrame.add(storyline.storyline.get(storyline.sceneCnt),1);
     storyline.revalidate();

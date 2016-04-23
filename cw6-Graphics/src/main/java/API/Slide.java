@@ -60,4 +60,5 @@ public class Slide extends JPanel{
     return false;
   }
   public void start(){}
+  public void stop(){}
 }

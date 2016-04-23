@@ -61,8 +61,7 @@ public class Explain extends JFrame {
       t.setInitialDelay(1000);
       t.start();
       // File f=new File("../../../../resources/zap.mp3");
-      //    Player p=Manager.createRealizedPlayer(f.toURI().toURL());
-      //    p.start();
+  
 
       // tx.setWindowSize(getBounds());
       // st.setWindowSize(getBounds());
