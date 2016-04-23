@@ -1,12 +1,14 @@
 package API;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.event.ChangeEvent;
+  import java.awt.*;
+  import javax.swing.*;
+  import javax.swing.event.*;
+  import javax.swing.event.ChangeEvent;
 
 public class ColorCombination extends Slide implements ChangeListener{
   private static final long serialVersionUID = 2L;
+  private static final int valuesX = 500;
+  private static final int valuesY = 300;
   private int initValue = 35;
   private int red = initValue;
   private int green = initValue;
@@ -72,7 +74,7 @@ public class ColorCombination extends Slide implements ChangeListener{
     drawColorBox(g);
     valueStringUpdate();
     drawValues(g);
-    
+
     g.drawString("So all a colour is, is our perception",guideXCC,540);
     g.drawString("of a combination of different frequencies of light",guideXCC, 570);
   }
@@ -99,13 +101,11 @@ public class ColorCombination extends Slide implements ChangeListener{
     g.setColor(new Color(red,green,blue));
     g.drawRect(460,250,200,200);
 
-    int x = 500;
-    int y = 300;
     g.setColor(getColor("yellow"));
-    g.drawString(redValues,x,y);
-    g.drawString(greenValues,x,y+30);
-    g.drawString(blueValues,x,y+60);
-    g.drawString(hexValue,x,y+90);
+    g.drawString(redValues, valuesX, valuesY);
+    g.drawString(greenValues, valuesX, valuesY + 30);
+    g.drawString(blueValues, valuesX, valuesY + 60);
+    g.drawString(hexValue, valuesX, valuesY + 90);
   }
   @Override
   public void stateChanged(ChangeEvent e){

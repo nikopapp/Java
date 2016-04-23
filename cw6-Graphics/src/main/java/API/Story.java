@@ -17,13 +17,14 @@ class Story extends Slide{
   AudioFormat PLAYBACK_FORMAT = new AudioFormat(44100,16, 1, true, false);
   Sound bzz,reveal;
   SoundManager soundManager;
-
+  private static final int X_ANGLE = 2;
   private AffineTransform at = new AffineTransform();
   private static final long serialVersionUID = 1L;
   private PolygonExt flashlight;
   private int flashlightCentX;
   private boolean lit = false;
   private PolygonExt prism;
+  private double[] prismTransfrm = new double[6];
   private boolean solved = false;
   private boolean firstTime = true;
   // private static int prismCenterX;
@@ -83,6 +84,8 @@ class Story extends Slide{
     drawCable(g);
     drawPunchLines(g);
     if(!lit) drawPunchCovers(g);
+    at.getMatrix(prismTransfrm);
+    drawSpectrum(g);
   }
   private void drawScene(Graphics2D g){
     g.setColor(new Color(5, 5,20,50));
@@ -98,9 +101,6 @@ class Story extends Slide{
     g.drawString("Interact with me", 630,250);
     g.drawLine(630,255,570,355);
     g.drawLine(630,255,780,255);
-    double[] flatMatrix = new double[6];
-    at.getMatrix(flatMatrix);
-    drawSpectrum(g,flatMatrix[2]);
   }
   private void createDynamicGradientPaints(){
     prismLightStyleR.add(new GradientPaint(windowWidth/2+115,300,new Color(160,40,0,100),windowWidth,600,getColor("transparent")));
@@ -140,35 +140,36 @@ class Story extends Slide{
     pol.translate(115,0);
     g.fillPolygon(pol);
   }
-  private void drawSpectrum(Graphics2D g, double side){
-    if((side>0.93&&side<1.0)||
-    (side>-1.0&&side<-0.93)){
+  private void drawSpectrum(Graphics2D g){
+    double angle = prismTransfrm[X_ANGLE];
+    if(( angle > 0.93 && angle < 1.0) ||
+       (angle > -1.0 && angle < -0.93)){
       if(!solved && firstTime) playSoundReveal();
       int i = 1;
       ArrayList<GradientPaint> list;
-      if(side >=0 ) list = prismLightStyleR;
+      if(angle >=0 ) list = prismLightStyleR;
       else list = prismLightStyleL;
       g.drawString("Light can be separated into its different frequencies, thus different colors",60,600);
       for(GradientPaint gpaint : list){
         g.setPaint(gpaint);
         g.fill(at.createTransformedShape(new Rectangle(540+i*10,379,20,700)));
         i++;
+      }
+    } else{
+      firstTime = true;
+      solved = false;
     }
-  } else{
-    firstTime = true;
-    solved = false;
-  }
   }
   private void drawCable(Graphics2D g){
     g.setStroke(new BasicStroke(1, BasicStroke.CAP_ROUND,
-             BasicStroke.JOIN_ROUND));
+                BasicStroke.JOIN_ROUND));
     g.setColor(getColor("blue"));
     g.drawLine(X1, Y1, X2, Y2);
     g.drawLine(X2, Y2, X3, Y3);
     g.drawLine(X3, Y3, X4, Y4);
     g.drawLine(X4, Y4, X5, Y5);
     if(Y6 != 0)
-    g.drawLine(X5, Y5, X6, Y6);
+      g.drawLine(X5, Y5, X6, Y6);
     // System.out.println(""+X1+","+Y1+","+X2+","+Y2+","+X3+","+Y3+","+X4+","+Y4+","+X5+","+Y5);
   }
   @Override
@@ -243,11 +244,7 @@ class Story extends Slide{
 
     }
 
-    // public void reset(){
-    //   Y2=0;
-    //   lit=false;
-    // }
-
+  
         // private static BufferedImage loadImage(String url){
         //   BufferedImage img = null;
         //   try {
