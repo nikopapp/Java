@@ -20,7 +20,9 @@ public class Slide extends JPanel{
   private Color yellow = new Color(150,150,100);
   private Color transparent = new Color(0,0,0,0);
   private RenderingHints rh=ToolKit.configRHints();
-  private Font fontText = new Font("Dialog",Font.PLAIN,18);
+  private Font fontTextBig = new Font("Dialog",Font.PLAIN,18);
+  private Font fontTextNorm = new Font("Dialog",Font.PLAIN,15);
+  private Font fontTextSmall = new Font("Dialog",Font.BOLD,13);
   private long frameCnt = 0;
   private BasicStroke defStroke = new BasicStroke(5);
   private GradientPaint light = new GradientPaint(0,200,new Color(190,200,170,110),0,400, getColor("transparent"));
@@ -40,8 +42,15 @@ public class Slide extends JPanel{
   public Color getColor(int r, int g, int b){
     return new Color(r,g,b);
   }
+  public Font getFont(String type){
+    if(type.equals("small")) return fontTextSmall;
+    if(type.equals("normal")) return fontTextNorm;
+    if(type.equals("big"))  return fontTextBig;
+    return fontTextNorm;
+  }
+
   public Font getFont(){
-    return fontText;
+    return fontTextNorm;
   }
   public RenderingHints getRenderingHints(){
     return rh;

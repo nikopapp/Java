@@ -13,7 +13,7 @@ public class ChannelCombination extends Slide implements ActionListener{
   private Integer[][] redChannel   = new Integer[3][3];
   private Integer[][] greenChannel = new Integer[3][3];
   private Integer[][] blueChannel  = new Integer[3][3];
-  private BasicStroke old = new BasicStroke();
+  private BasicStroke old = new BasicStroke(1f);
 
   public ChannelCombination(){
     createChannelInputArrays();
@@ -35,31 +35,20 @@ public class ChannelCombination extends Slide implements ActionListener{
     g.drawRect(windowWidth/7,windowHeight/7,windowWidth/7,windowHeight/7);
     g.drawRect(3*windowWidth/7,windowHeight/7,windowWidth/7,windowHeight/7);
     g.drawRect(5*windowWidth/7,windowHeight/7,windowWidth/7,windowHeight/7);
+
+    g.setStroke(new BasicStroke(5f));
     g.drawRect(windowWidth/2-150,300,300,300);
     fillPixelArray(g);
-    g.setStroke(new BasicStroke(5f));
-    g.drawLine(2*windowWidth/7+windowWidth/14,windowHeight/7+20,2*windowWidth/7+windowWidth/14,2*windowHeight/7-20);
-    g.drawLine(4*windowWidth/7+windowWidth/14,windowHeight/7+20,4*windowWidth/7+windowWidth/14,2*windowHeight/7-20);
-
-    g.drawLine(2*windowWidth/7+windowWidth/14-30,windowHeight/7+windowHeight/14,2*windowWidth/7+windowWidth/14+30,windowHeight/7+windowHeight/14);
-    g.drawLine(4*windowWidth/7+windowWidth/14-30,windowHeight/7+windowHeight/14,4*windowWidth/7+windowWidth/14+30,windowHeight/7+windowHeight/14);
-
-    g.drawLine(windowWidth/2-30,2*windowHeight/7+windowHeight/14,windowWidth/2+30,2*windowHeight/7+windowHeight/14);
-    g.drawLine(windowWidth/2-30,2*windowHeight/7+windowHeight/14+30,windowWidth/2+30,2*windowHeight/7+windowHeight/14+30);
-
-    g.setStroke(old);
+    drawOperators(g);
   }
   private void createChannelInputArrays(){
     ArrayList<JPanel> boxes = new ArrayList<>();
-    for(int j=0;j<27;j++){
-      JComboBox cb = new JComboBox(valueList);
-      cb.addActionListener(this);
-      cb.setUI(new JBoxStyle());
-      cbList.add(cb);
-    }
+    setupComboboxes();
     for(int i = 0; i<3; i++){
       boxes.add(new JPanel());
+      boxes.get(i).setBackground(getColor("grayBg"));
       boxes.get(i).setLayout(new GridLayout(3,3));
+      boxes.get(i).setBorder(BorderFactory.createEmptyBorder(0,100,0,20));
     }
     for(int i=0;i<3;i++){
       for(int j=0;j<9;j++){
@@ -82,6 +71,7 @@ public class ChannelCombination extends Slide implements ActionListener{
   private void fillPixelArray(Graphics2D g){
     for(int i = 0; i<3;i++){
       for(int j = 0; j<3;j++){
+        g.setStroke(new BasicStroke(3f));
         g.setColor(new Color(redChannel[i][j],greenChannel[i][j],blueChannel[i][j]));
         g.fillRect(windowWidth/2-150+j*100,300+i*100,100,100);
         g.setColor(new Color(redChannel[i][j],0,0));
@@ -91,12 +81,35 @@ public class ChannelCombination extends Slide implements ActionListener{
         g.setColor(new Color(0,0,blueChannel[i][j]));
         g.fillRect(5*windowWidth/7+j*windowWidth/7/3,windowHeight/7+i*windowHeight/7/3,windowWidth/7/3,windowHeight/7/3);
         g.setColor(getColor("yellow"));
-        g.setStroke(new BasicStroke(2f));
         g.drawRect(windowWidth/7+j*windowWidth/7/3,windowHeight/7+i*windowHeight/7/3,windowWidth/7/3,windowHeight/7/3);
         g.drawRect(3*windowWidth/7+j*windowWidth/7/3,windowHeight/7+i*windowHeight/7/3,windowWidth/7/3,windowHeight/7/3);
         g.drawRect(5*windowWidth/7+j*windowWidth/7/3,windowHeight/7+i*windowHeight/7/3,windowWidth/7/3,windowHeight/7/3);
+        g.setStroke(old);
 
       }
+    }
+  }
+  private void drawOperators(Graphics2D g){
+    g.setStroke(new BasicStroke(5f));
+    g.drawLine(2*windowWidth/7+windowWidth/14,windowHeight/7+20,2*windowWidth/7+windowWidth/14,2*windowHeight/7-20);
+    g.drawLine(4*windowWidth/7+windowWidth/14,windowHeight/7+20,4*windowWidth/7+windowWidth/14,2*windowHeight/7-20);
+
+    g.drawLine(2*windowWidth/7+windowWidth/14-30,windowHeight/7+windowHeight/14,2*windowWidth/7+windowWidth/14+30,windowHeight/7+windowHeight/14);
+    g.drawLine(4*windowWidth/7+windowWidth/14-30,windowHeight/7+windowHeight/14,4*windowWidth/7+windowWidth/14+30,windowHeight/7+windowHeight/14);
+
+    g.drawLine(windowWidth/2-30,2*windowHeight/7+windowHeight/14,windowWidth/2+30,2*windowHeight/7+windowHeight/14);
+    g.drawLine(windowWidth/2-30,2*windowHeight/7+windowHeight/14+30,windowWidth/2+30,2*windowHeight/7+windowHeight/14+30);
+    g.setStroke(old);
+  }
+  private void setupComboboxes(){
+    for(int j=0;j<27;j++){
+      JComboBox cb = new JComboBox(valueList);
+      cb.addActionListener(this);
+      cb.setUI(new JBoxStyle());
+      cb.setForeground(getColor("yellow"));
+      cb.setBackground(getColor("grayBg"));
+      cb.setFont(getFont("small"));
+      cbList.add(cb);
     }
   }
   @Override
@@ -120,6 +133,7 @@ public class ChannelCombination extends Slide implements ActionListener{
         }
       }
     }
+
     // System.out.println(redChannel[0][0] +" "+redChannel[0][1] +" "+redChannel[0][2]
     //  +" "+greenChannel[0][0] +" "+greenChannel[0][1] +" "+greenChannel[0][2] +" "+
     //  blueChannel[0][0] +" "+blueChannel[0][1] +" "+blueChannel[0][2] );

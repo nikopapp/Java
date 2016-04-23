@@ -23,38 +23,36 @@ class GUI extends JPanel {
     mainFrame=navFrame();
     storyline.add(mainFrame);
     mainFrame.add(storyline.storyline.get(0));
-    mainFrame.setBackground(Color.black);
     storyline.pack();
     storyline.setLocationByPlatform(false);
     storyline.setVisible(true);
     t.start();
   }
   private Box navFrame(){
-    Border border = BorderFactory.createEmptyBorder(10,10,10,10);
     Box box = Box.createHorizontalBox();
     //necessary for the image to be loaded directly from the jar file
-    // URL resource = getClass().getClassLoader().getResource("logo/logo.png");
-    // JLabel logo = new JLabel(new ImageIcon(resource));
-    // box.add(logo);
+    box.setOpaque(true);
+    box.setBackground(new Color(25,25,25));
     box.add(navButtons());
-    box.setBorder(border);
+    // box.setBorder(border);
     return box;
   }
 
-  private JPanel navButtons(){
-    JPanel box = new JPanel();
-    BoxLayout layout = new BoxLayout(box,BoxLayout.PAGE_AXIS);
+  private Box navButtons(){
+    Border border = BorderFactory.createEmptyBorder(10,10,10,10);
+    Box box = Box.createVerticalBox();
+    box.setBorder(border);
+    // URL resource = getClass().getResource("logoImage.png");
+    JLabel logo = new JLabel(new ImageIcon("resources/vectors/logo.png"));
+    box.add(logo);
     ButtonStyle bStyle = new ButtonStyle();
     JButton[] buttons =  new JButton[30];
     for (int i=0;i<10;i++){
       buttons[i] = new JButton("Scene " +i);
     }
     buttonAddAction(buttons);
-    box.setLayout(layout);
     for (JButton but:buttons){
       if(but!=null){
-        but.setForeground(Color.white);
-        but.setBackground(new Color(0xAABBAA));
         but.setUI(bStyle);
         box.add(but);
       }

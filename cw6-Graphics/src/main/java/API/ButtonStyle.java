@@ -12,6 +12,8 @@ class ButtonStyle extends BasicButtonUI {
     AbstractButton button = (AbstractButton) c;
     button.setOpaque(false);
     button.setBorder(new EmptyBorder(5,15,5,15));
+    button.setForeground(new Color(200,200,150));
+    button.setBackground(new Color(40,40,40));
   }
   @Override
   public void paint(Graphics g, JComponent c){

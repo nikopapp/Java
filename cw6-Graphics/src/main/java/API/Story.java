@@ -94,6 +94,7 @@ class Story extends Slide{
     drawLight(g);
     g.setColor(getColor("yellow"));
     g.fill(at.createTransformedShape(prism));
+    g.setFont(getFont("big"));
     g.drawString("Interact with me", 630,250);
     g.drawLine(630,255,570,355);
     g.drawLine(630,255,780,255);
@@ -117,7 +118,7 @@ class Story extends Slide{
   }
   private void drawPunchLines(Graphics2D g){
     g.setColor(getColor("yellow"));
-    g.setFont(getFont());
+    g.setFont(getFont("big"));
     g.drawString("It all begins with electricity", 2*guideX,50);
     String s = "Which is transformed into ";
     if(lit) s = s+"Light";
