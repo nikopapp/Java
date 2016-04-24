@@ -7,6 +7,8 @@ repositories {
    jcenter()
 }
 
+
+
 mainClassName = 'API.GUI'
 
 run {
@@ -24,7 +26,7 @@ dependencies {
 //create a single Jar with all dependencies
 task fatJar(type: Jar) {
 	manifest {
-        attributes 'Implementation-Title': 'Gradle Jar File Example',  
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
         	'Implementation-Version': 1,
         	'Main-Class': 'API.GUI'
     }
