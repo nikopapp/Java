@@ -8,7 +8,6 @@ import java.io.*;
 import java.net.*;
 class TextScrolling extends Slide{
   private static final long serialVersionUID = 3L;
-  private static final int lineSize = 30;
   private boolean running = false;
   private double textY0 = windowHeight;
   private GradientPaint gray2trans;
@@ -20,30 +19,16 @@ class TextScrolling extends Slide{
     super.paintComponent(g0);
     Graphics2D g = (Graphics2D) g0;
     g.setRenderingHints(ToolKit.configRHints());
-    drawText("resources/conv.txt",g);
+    drawText("resources/conv.txt",g,guideX,(int)textY0);
     gray2trans = new GradientPaint(0,windowHeight,getColor("grayBg"),0, windowHeight-100,new Color(50,50,50,0));
     g.setPaint(gray2trans);
     g.fillRect(0,300,windowWidth,windowHeight-300);
   }
-
-  private void drawText(String filePath, Graphics g){
-      BufferedReader b;
-      String temp;
-      int i=0;
-      g.setColor(getColor("yellow"));
-      g.setFont(fontText);
-      try{
-        b = new BufferedReader(new FileReader(filePath));
-        while((temp = b.readLine()) != null){
-          i++;
-          g.drawString(temp,guideX,(int)textY0+lineSize*i);
-        }
-
-      }catch(Exception e){}
-  }
+  @Override
   public void start(){
     this.running = true;
   }
+  @Override
   public void stop(){
     this.running = false;
   }

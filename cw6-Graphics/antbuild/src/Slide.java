@@ -12,14 +12,15 @@ import javax.swing.event.MouseInputAdapter;
 public class Slide extends JPanel{
 
   private static final long serialVersionUID = 10L;
+  private RenderingHints rh=ToolKit.configRHints();
   public int windowHeight = 630;
   public int windowWidth  = 840;
   public int guideX = 40;
+  public static final int lineSize = 25;
   private Color grayBg = new Color(50,50,50);
   private Color blue = new Color(120,150,150);
   private Color yellow = new Color(150,150,100);
   private Color transparent = new Color(0,0,0,0);
-  private RenderingHints rh=ToolKit.configRHints();
   private Font fontTextBig = new Font("Dialog",Font.PLAIN,18);
   private Font fontTextNorm = new Font("Dialog",Font.PLAIN,15);
   private Font fontTextSmall = new Font("Dialog",Font.BOLD,13);
@@ -31,7 +32,21 @@ public class Slide extends JPanel{
     setBackground(grayBg);
     setPreferredSize(new Dimension(windowWidth , windowHeight));
   }
+  public void drawText(String filePath, Graphics g, int x, int y){
+      BufferedReader b;
+      String temp;
+      int i=0;
+      g.setColor(yellow);
+      g.setFont(fontTextBig);
+      try{
+        b = new BufferedReader(new FileReader(filePath));
+        while((temp = b.readLine()) != null){
+          i++;
+          g.drawString(temp, x, y+lineSize*i);
+        }
 
+      }catch(Exception e){}
+  }
   public Color getColor(String color){
     if(color.equals("grayBg")) return grayBg;
     if(color.equals("yellow")) return yellow;

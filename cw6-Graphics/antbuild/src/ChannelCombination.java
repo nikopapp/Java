@@ -32,9 +32,9 @@ public class ChannelCombination extends Slide implements ActionListener{
     Graphics2D g = (Graphics2D) g0;
     g.setRenderingHints(ToolKit.configRHints());
     g.setColor(getColor("yellow"));
-    g.drawRect(windowWidth/7,windowHeight/7,windowWidth/7,windowHeight/7);
-    g.drawRect(3*windowWidth/7,windowHeight/7,windowWidth/7,windowHeight/7);
-    g.drawRect(5*windowWidth/7,windowHeight/7,windowWidth/7,windowHeight/7);
+    g.drawRect(windowWidth/8,windowHeight/8,windowWidth/8,windowHeight/8);
+    g.drawRect(3*windowWidth/8,windowHeight/8,windowWidth/8,windowHeight/8);
+    g.drawRect(5*windowWidth/8,windowHeight/8,windowWidth/8,windowHeight/8);
 
     g.setStroke(new BasicStroke(5f));
     g.drawRect(windowWidth/2-150,300,300,300);
@@ -64,7 +64,6 @@ public class ChannelCombination extends Slide implements ActionListener{
         redChannel[i][j]=0;
         greenChannel[i][j]=0;
         blueChannel[i][j]=0;
-        System.out.println(redChannel[i][j] +" "+ greenChannel[i][j] +" "+ blueChannel[i][j]);
       }
     }
   }
@@ -117,7 +116,6 @@ public class ChannelCombination extends Slide implements ActionListener{
     for(int i = 0;i< 3;i++){
       for(int j = 0;j<3;j++){
         for (int k = 0; k<3;k++){
-          // String  s = cbList.get(i).getSelectedItem();
           switch (i){
             case 0:
               redChannel[j][k]=Integer.parseInt(cbList.get(i*9+j*3+k).getSelectedItem().toString());
@@ -133,17 +131,5 @@ public class ChannelCombination extends Slide implements ActionListener{
         }
       }
     }
-
-    // System.out.println(redChannel[0][0] +" "+redChannel[0][1] +" "+redChannel[0][2]
-    //  +" "+greenChannel[0][0] +" "+greenChannel[0][1] +" "+greenChannel[0][2] +" "+
-    //  blueChannel[0][0] +" "+blueChannel[0][1] +" "+blueChannel[0][2] );
-    //
-    //  System.out.println(redChannel[1][0] +" "+redChannel[1][1] +" "+redChannel[1][2]
-    //   +" "+greenChannel[1][0] +" "+greenChannel[1][1] +" "+greenChannel[1][2] +" "+
-    //   blueChannel[1][0] +" "+blueChannel[1][1] +" "+blueChannel[1][2] );
-    //
-    //   System.out.println(redChannel[2][0] +" "+redChannel[2][1] +" "+redChannel[2][2]
-    //    +" "+greenChannel[2][0] +" "+greenChannel[2][1] +" "+greenChannel[2][2] +" "+
-    //    blueChannel[2][0] +" "+blueChannel[2][1] +" "+blueChannel[2][2] );
   }
 }

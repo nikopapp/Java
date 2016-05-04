@@ -74,9 +74,10 @@ public class ColorCombination extends Slide implements ChangeListener{
     drawColorBox(g);
     valueStringUpdate();
     drawValues(g);
-
+    g.drawString("Move the sliders to change the levels of ", guideXCC, windowHeight/3);
+    g.drawString("red gren and blue inside the coloured rectangle", guideXCC, windowHeight/3+lineSize);
     g.drawString("So all a colour is, is our perception",guideXCC,540);
-    g.drawString("of a combination of different frequencies of light",guideXCC, 570);
+    g.drawString("of a combination of different frequencies of light",guideXCC, 540+lineSize);
   }
   private void valueStringUpdate(){
     redValues =   "red   : " + red;

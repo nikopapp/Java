@@ -1,0 +1,14 @@
+Welcome, this is an interactive slide show that treats to introduce you to 
+
+basic Image Processing.
+
+
+
+
+What is colour?
+
+What is a picture? 
+
+It all gets down to simple things
+
+Let's go on and find out!

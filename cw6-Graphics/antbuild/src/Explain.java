@@ -14,23 +14,15 @@ public class Explain extends JFrame {
 
   private Color grayBg = new Color(50,50,50);
   ArrayList<Slide> storyline = new ArrayList<Slide>();
-  // Story st = new Story();
-  // ColorCombination cc;
-  // ChannelCombination chc;
-  // TextScrolling tx;
   Box mainFrame;
-  // JFrame frame = new JFrame("Learn about Artificial Neural Netwroks");
   int sceneCnt = 0;
   Explain(){
+    storyline.add(new Intro());
     storyline.add(new Story());
     storyline.add(new ColorCombination());
     storyline.add(new ChannelCombination());
     storyline.add(new TextScrolling());
     storyline.add(new MotionDet());
-    // st  = new Story();
-    // cc  = new ColorCombination();
-    // chc = new ChannelCombination();
-    // tx  = new TextScrolling();
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle("Introduction to Image Proccessing");
     addComponentListener(new resizeListener());
@@ -85,15 +77,15 @@ public class Explain extends JFrame {
     }
     }
     public void slide1(){
-      if(storyline.get(0).tick()==false) sceneCnt++;
+      if(storyline.get(1).tick()==false) sceneCnt++;
     }
     public void slide4(){
-      storyline.get(3).start();
-      storyline.get(3).tick();
+      storyline.get(4).start();
+      storyline.get(4).tick();
     }
 
     public void slide5(){
-      storyline.get(4).tick();
+      storyline.get(5).tick();
     }
   private void adaptSlides(Dimension d){
     for(Slide s:storyline){

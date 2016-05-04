@@ -12,6 +12,7 @@ class GUI extends JPanel {
   private static Explain storyline = new Explain();
   private Timer t = new Timer(25, new Animation());
   private Box mainFrame;
+  private Color navigMenu = new Color(25,25,25);
   GUI(){
 
   }
@@ -32,31 +33,36 @@ class GUI extends JPanel {
     Box box = Box.createHorizontalBox();
     //necessary for the image to be loaded directly from the jar file
     box.setOpaque(true);
-    box.setBackground(new Color(25,25,25));
+    box.setBackground(navigMenu);
     box.add(navButtons());
     // box.setBorder(border);
     return box;
   }
 
   private Box navButtons(){
+    String[] butNames = {"Introduction", "Light", "Color", "Pixel", "Image","Convolution", "Video Processing"};
     Border border = BorderFactory.createEmptyBorder(10,10,10,10);
     Box box = Box.createVerticalBox();
+    JPanel butPanel = new JPanel(new GridLayout(10,1));
+    butPanel.setBackground(navigMenu);
     box.setBorder(border);
-    // URL resource = getClass().getResource("logoImage.png");
+    // URL resource = getClass().getResource("vectors/logo.png");
     JLabel logo = new JLabel(new ImageIcon("resources/vectors/logo.png"));
     box.add(logo);
     ButtonStyle bStyle = new ButtonStyle();
     JButton[] buttons =  new JButton[30];
     for (int i=0;i<10;i++){
-      buttons[i] = new JButton("Scene " +i);
+      if(i < butNames.length) buttons[i] = new JButton(butNames[i]);
+      else buttons[i] = new JButton("Scene " +i);
     }
     buttonAddAction(buttons);
     for (JButton but:buttons){
       if(but!=null){
         but.setUI(bStyle);
-        box.add(but);
+        butPanel.add(but);
       }
     }
+    box.add(butPanel);
     return box;
   }
   private void buttonAddAction(JButton[] buttons){
@@ -65,7 +71,7 @@ class GUI extends JPanel {
     buttons[2].addActionListener(this::gotoSlide3);
     buttons[3].addActionListener(this::gotoSlide4);
     buttons[4].addActionListener(this::gotoSlide5);
-    buttons[5].addActionListener(this::gotoSlide1);
+    buttons[5].addActionListener(this::gotoSlide6);
     buttons[6].addActionListener(this::gotoSlide2);
     buttons[7].addActionListener(this::gotoSlide3);
     buttons[8].addActionListener(this::gotoSlide4);
@@ -92,6 +98,10 @@ class GUI extends JPanel {
     storyline.sceneCnt=4;
     changeScene();
   }
+  private void gotoSlide6(ActionEvent e){
+    storyline.sceneCnt=5;
+    changeScene();
+  }
   private void changeScene(){
     mainFrame.remove(1);
     mainFrame.add(storyline.storyline.get(storyline.sceneCnt),1);
@@ -106,17 +116,19 @@ class GUI extends JPanel {
     public void actionPerformed(ActionEvent e) {
       switch (storyline.sceneCnt){
         case 0:
-          for(int i=0;i<6;i++)
-            storyline.slide1();
           break;
         case 1:
+          for(int i=0;i<6;i++)
+            storyline.slide1();
         case 2:
           break;
         case 3:
-            storyline.slide4();
           break;
         case 4:
-            storyline.slide5();
+          storyline.slide4();
+          break;
+        case 5:
+          storyline.slide5();
           break;
       }
     }

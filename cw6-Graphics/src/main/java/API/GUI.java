@@ -42,8 +42,8 @@ class GUI extends JPanel {
     Border border = BorderFactory.createEmptyBorder(10,10,10,10);
     Box box = Box.createVerticalBox();
     box.setBorder(border);
-    // URL resource = getClass().getResource("logoImage.png");
-    JLabel logo = new JLabel(new ImageIcon("resources/vectors/logo.png"));
+    URL resource = getClass().getClassLoader().getResource("vectors/logo.png");
+    JLabel logo = new JLabel(new ImageIcon(resource));
     box.add(logo);
     ButtonStyle bStyle = new ButtonStyle();
     JButton[] buttons =  new JButton[30];

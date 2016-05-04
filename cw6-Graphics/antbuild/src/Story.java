@@ -27,8 +27,8 @@ class Story extends Slide{
   private double[] prismTransfrm = new double[6];
   private boolean solved = false;
   private boolean firstTime = true;
-  // private static int prismCenterX;
-  // private static int prismCenteY;
+  private int prismCenterX;
+  private int prismCenterY;
   private int guideX = 40;
   private int X1 = guideX;
   private int X2 = guideX;
@@ -54,11 +54,18 @@ class Story extends Slide{
     setBackground( Color.black );
     addMouseListener(rotator);
     addMouseMotionListener(rotator);
-    // URL resourceFlashlight = getClass().getClassLoader().getResource("resources/vectors/flashlight.fx");
-    // URL resourcePrism = getClass().getClassLoader().getResource("resources/vectors/prism.fx");
+    URL resourceFlashlight = getClass().getClassLoader().getResource("vectors/flashlight.fx");
+    URL resourcePrism = getClass().getClassLoader().getResource("vectors/prism.fx");
 
-    flashlight = svg.loadSvg("resources/vectors/flashlight.fx",windowWidth/2+95,200);
-    prism = svg.loadSvg("resources/vectors/prism.fx",windowWidth/2+95,400);
+    // flashlight = svg.loadSvg("resources/vectors/flashlight.fx",windowWidth/2+95,200);
+    // prism = svg.loadSvg("resources/vectors/prism.fx",windowWidth/2+95,400);
+
+        flashlight = svg.loadSvg(resourceFlashlight,windowWidth/2+95,200);
+        prism = svg.loadSvg(resourcePrism,windowWidth/2+95,400);
+
+    prismCenterX = prism.getCenterX();
+    prismCenterY = prism.getCenterY();
+
     createDynamicGradientPaints();
     initSounds();
   }
@@ -96,7 +103,7 @@ class Story extends Slide{
     g.fillRect(rectX1, 100, 300, 25);
     drawLight(g);
     g.setColor(getColor("yellow"));
-    g.fill(at.createTransformedShape(prism));
+    drawPrism(g);
     g.setFont(getFont("big"));
     g.drawString("Interact with me", 630,250);
     g.drawLine(630,255,570,355);
@@ -123,6 +130,13 @@ class Story extends Slide{
     String s = "Which is transformed into ";
     if(lit) s = s+"Light";
     g.drawString(s,3*guideX,250);
+  }
+  private void drawPrism(Graphics2D g){
+    Color oldTemp = g.getColor();
+    g.fill(at.createTransformedShape(prism));
+    g.setColor(Color.black);
+    g.fillOval(prismCenterX,prismCenterY,4,4);
+    g.setColor(oldTemp);
   }
   private void drawPunchCovers(Graphics2D g){
     g.setColor(Color.black);
@@ -244,7 +258,7 @@ class Story extends Slide{
 
     }
 
-  
+
         // private static BufferedImage loadImage(String url){
         //   BufferedImage img = null;
         //   try {
