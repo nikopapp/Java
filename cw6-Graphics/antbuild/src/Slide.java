@@ -12,7 +12,7 @@ import javax.swing.event.MouseInputAdapter;
 public class Slide extends JPanel{
 
   private static final long serialVersionUID = 10L;
-  private RenderingHints rh=ToolKit.configRHints();
+  private RenderingHints rh = configRHints();
   public int windowHeight = 630;
   public int windowWidth  = 840;
   public int guideX = 40;
@@ -82,6 +82,27 @@ public class Slide extends JPanel{
   }
   public boolean tick(){
     return false;
+  }
+  public RenderingHints configRHints(){
+    //---------------- Anti aliasing --------------
+    RenderingHints rh = new RenderingHints(
+    RenderingHints.KEY_ANTIALIASING,
+    RenderingHints.VALUE_ANTIALIAS_ON);
+    rh.put(RenderingHints.KEY_ALPHA_INTERPOLATION,
+    RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+    rh.put(RenderingHints.KEY_COLOR_RENDERING,
+    RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+    rh.put(RenderingHints.KEY_DITHERING,
+    RenderingHints.VALUE_DITHER_ENABLE);
+    rh.put(RenderingHints.KEY_FRACTIONALMETRICS,
+    RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+    rh.put(RenderingHints.KEY_INTERPOLATION,
+    RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+    rh.put(RenderingHints.KEY_RENDERING,
+    RenderingHints.VALUE_RENDER_QUALITY);
+    rh.put(RenderingHints.KEY_STROKE_CONTROL,
+    RenderingHints.VALUE_STROKE_PURE);
+    return rh;
   }
   public void start(){}
   public void stop(){}

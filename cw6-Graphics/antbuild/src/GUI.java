@@ -10,7 +10,8 @@ import java.awt.event.*;
 class GUI extends JPanel {
   private static final long serialVersionUID = 100L;
   private static Explain storyline = new Explain();
-  private Timer t = new Timer(25, new Animation());
+  private static final int refreshRate = 25;
+  private Timer t = new Timer(refreshRate, new Animation());
   private Box mainFrame;
   private Color navigMenu = new Color(25,25,25);
   GUI(){
@@ -40,7 +41,8 @@ class GUI extends JPanel {
   }
 
   private Box navButtons(){
-    String[] butNames = {"Introduction", "Light", "Color", "Pixel", "Image","Convolution", "Video Processing"};
+    String[] butNames = {"Introduction", "Light", "Color", "Pixel",
+                         "Convolution", "Video Processing", "Pong"};
     Border border = BorderFactory.createEmptyBorder(10,10,10,10);
     Box box = Box.createVerticalBox();
     JPanel butPanel = new JPanel(new GridLayout(10,1));
@@ -72,10 +74,7 @@ class GUI extends JPanel {
     buttons[3].addActionListener(this::gotoSlide4);
     buttons[4].addActionListener(this::gotoSlide5);
     buttons[5].addActionListener(this::gotoSlide6);
-    buttons[6].addActionListener(this::gotoSlide2);
-    buttons[7].addActionListener(this::gotoSlide3);
-    buttons[8].addActionListener(this::gotoSlide4);
-    buttons[9].addActionListener(this::gotoSlide5);
+    buttons[6].addActionListener(this::gotoSlide7);
   }
   private void gotoSlide1(ActionEvent e){
     storyline.sceneCnt=0;
@@ -102,6 +101,11 @@ class GUI extends JPanel {
     storyline.sceneCnt=5;
     changeScene();
   }
+  private void gotoSlide7(ActionEvent e){
+    storyline.sceneCnt=6;
+    changeScene();
+  }
+
   private void changeScene(){
     mainFrame.remove(1);
     mainFrame.add(storyline.storyline.get(storyline.sceneCnt),1);
@@ -129,6 +133,9 @@ class GUI extends JPanel {
           break;
         case 5:
           storyline.slide5();
+          break;
+        case 6:
+          storyline.slide6();
           break;
       }
     }

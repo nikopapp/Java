@@ -30,7 +30,7 @@ public class MotionDet extends Slide{
     JPanel buttonPanel = new JPanel();
     ArrayList<JButton> blist = new ArrayList<JButton>();
     buttonPanel.setBackground(new Color(25,25,25));
-    buttonPanel.setLayout(new GridLayout(6,1));
+    buttonPanel.setLayout(new GridLayout(7,1));
     buttonPanel.setBorder(BorderFactory.createEmptyBorder(50,10,50,10));
     Box hbox = Box.createHorizontalBox();
 
@@ -40,6 +40,7 @@ public class MotionDet extends Slide{
     blist.add(new JButton("Laplacian"));
     blist.add(new JButton("Edge Detection"));
     blist.add(new JButton("Motion Detection"));
+    blist.add(new JButton("Hand Detection"));
 
     ButtonStyle general = new ButtonStyle();
     buttonAddAction(blist);
@@ -63,6 +64,7 @@ public class MotionDet extends Slide{
     buttons.get(3).addActionListener(this::setFilter3);
     buttons.get(4).addActionListener(this::setFilter4);
     buttons.get(5).addActionListener(this::setFilter5);
+    buttons.get(6).addActionListener(this::setFilter6);
   }
 
 
@@ -86,6 +88,9 @@ public class MotionDet extends Slide{
     this.i=0;
     filter=5;
   }
+  private void setFilter6(ActionEvent e){
+    filter=6;
+  }
 
   @Override
   public boolean tick(){
@@ -107,6 +112,9 @@ public class MotionDet extends Slide{
         break;
       case 5:
         label.setIcon(cc.run(this.i));
+        break;
+      case 6:
+        label.setIcon(cc.runHand());
         break;
     }
     label.repaint();

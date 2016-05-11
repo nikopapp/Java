@@ -23,6 +23,7 @@ public class Explain extends JFrame {
     storyline.add(new ChannelCombination());
     storyline.add(new TextScrolling());
     storyline.add(new MotionDet());
+    storyline.add(new Pong());
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle("Introduction to Image Proccessing");
     addComponentListener(new resizeListener());
@@ -72,6 +73,9 @@ public class Explain extends JFrame {
             break;
           case 5:
             break;
+          case 6:
+            slide6();
+            break;
         }
       }
     }
@@ -86,6 +90,9 @@ public class Explain extends JFrame {
 
     public void slide5(){
       storyline.get(5).tick();
+    }
+    public void slide6(){
+      storyline.get(6).tick();
     }
   private void adaptSlides(Dimension d){
     for(Slide s:storyline){
