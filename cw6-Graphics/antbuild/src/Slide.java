@@ -32,6 +32,14 @@ public class Slide extends JPanel{
     setBackground(grayBg);
     setPreferredSize(new Dimension(windowWidth , windowHeight));
   }
+  public static JFrame initFrame(String str, Slide slide){
+    JFrame frame = new JFrame(str);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setContentPane(slide);
+    frame.setSize(slide.windowWidth, slide.windowHeight);
+    frame.setVisible(true);
+    return frame;
+  }
   public void drawText(String filePath, Graphics g, int x, int y){
       BufferedReader b;
       String temp;

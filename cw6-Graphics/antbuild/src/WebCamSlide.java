@@ -6,16 +6,16 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class MotionDet extends Slide{
+public class WebCamSlide extends Slide{
   static JLabel label = new JLabel();
   public static int i = 0;
   private static int filter = 0;
   static JavaCVPrjt03 cc =  new JavaCVPrjt03();
-  MotionDet(){
+
+  WebCamSlide(){
     add(FrameAndButtons());
   }
   public static void main(String[] args){
-    // cc.run();
     JFrame f = new JFrame();
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.add(label);

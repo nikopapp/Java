@@ -29,7 +29,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.MatOfRect;
 
-public class JavaCVPrjt03{
+public class VideoProcess{
     static {
         System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
     }
@@ -44,10 +44,10 @@ public class JavaCVPrjt03{
     static Mat diff_frame = null;
     static Mat tempon_frame = null;
     static private int filter = 0;
-    public JavaCVPrjt03(int filter){
+    public VideoProcess(int filter){
       this.filter=filter;
     }
-    public JavaCVPrjt03(){
+    public VideoProcess(){
     }
 
     private static final long serialVersionUID = 1L;

@@ -18,11 +18,11 @@ public class Explain extends JFrame {
   int sceneCnt = 0;
   Explain(){
     storyline.add(new Intro());
-    storyline.add(new Story());
+    storyline.add(new Light());
     storyline.add(new ColorCombination());
     storyline.add(new ChannelCombination());
     storyline.add(new TextScrolling());
-    storyline.add(new MotionDet());
+    storyline.add(new WebCamSlide());
     storyline.add(new Pong());
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     setTitle("Introduction to Image Proccessing");
@@ -81,7 +81,8 @@ public class Explain extends JFrame {
     }
     }
     public void slide1(){
-      if(storyline.get(1).tick()==false) sceneCnt++;
+      for(int i=0; i<2; i++)
+         if(storyline.get(1).tick()==false) sceneCnt++;
     }
     public void slide4(){
       storyline.get(4).start();

@@ -10,7 +10,7 @@ import java.awt.event.*;
 class GUI extends JPanel {
   private static final long serialVersionUID = 100L;
   private static Explain storyline = new Explain();
-  private static final int refreshRate = 25;
+  private static final int refreshRate = 10;
   private Timer t = new Timer(refreshRate, new Animation());
   private Box mainFrame;
   private Color navigMenu = new Color(25,25,25);
@@ -122,8 +122,8 @@ class GUI extends JPanel {
         case 0:
           break;
         case 1:
-          for(int i=0;i<6;i++)
-            storyline.slide1();
+          storyline.slide1();
+          break;
         case 2:
           break;
         case 3:

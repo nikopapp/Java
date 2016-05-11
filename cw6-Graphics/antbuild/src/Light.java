@@ -13,7 +13,7 @@ import javax.sound.sampled.*;
 
 // write a tick method on slide then override it in every scene
 
-class Story extends Slide{
+class Light extends Slide{
   AudioFormat PLAYBACK_FORMAT = new AudioFormat(44100,16, 1, true, false);
   Sound bzz,reveal;
   SoundManager soundManager;
@@ -49,7 +49,7 @@ class Story extends Slide{
   private ArrayList<GradientPaint> prismLightStyleR = new ArrayList<GradientPaint>();
   private ArrayList<GradientPaint> prismLightStyleL = new ArrayList<GradientPaint>();
   private SvgShapes svg = new SvgShapes();
-  Story(){
+  Light(){
     super();
     setBackground( Color.black );
     addMouseListener(rotator);
@@ -70,7 +70,7 @@ class Story extends Slide{
     initSounds();
   }
   public static void main(String[] args){
-    Story test = new Story();
+    Light test = new Light();
     JFrame f = new JFrame();
     f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     f.getContentPane().add(test);
